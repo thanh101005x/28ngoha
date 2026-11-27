@@ -1,1 +1,1438 @@
+<!DOCTYPE html>
+<html lang="vi">
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TÀI XỈU 11 TIN</title>
+  <style>
+    :root {
+      --bg-felt: #0d4a2b;
+      --bg-felt-dark: #072d1a;
+      --panel-bg: #111820;
+      --panel-border: #2c3e50;
+      --gold: #ffd43b;
+      --gold-dim: #b58d16;
+      --tai: #ff4d4f;
+      --tai-bg: #3b1316;
+      --xiu: #38bdf8;
+      --xiu-bg: #0f2c3d;
+      --green: #22c55e;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #17693e 0%, var(--bg-felt) 52%, var(--bg-felt-dark) 100%);
+      color: var(--text);
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 920px;
+      background: rgba(13, 20, 28, 0.92);
+      border: 2px solid var(--gold-dim);
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      padding: 22px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .start-box {
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    .banner {
+      background: linear-gradient(135deg, #5c3413 0%, #381e09 100%);
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .banner h1 {
+      margin: 0;
+      font-size: clamp(26px, 5vw, 42px);
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .rules-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      text-align: left;
+      max-width: 680px;
+      margin: 0 auto 24px auto;
+      line-height: 1.65;
+    }
+
+    .rules-card p {
+      margin: 8px 0;
+      color: #e2e8f0;
+      font-size: 15px;
+    }
+
+    .rules-card strong {
+      color: var(--gold);
+    }
+
+    .btn {
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
+      color: var(--text);
+      background: #1e293b;
+    }
+
+    .btn:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-start {
+      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+      color: #052e16;
+      border-color: var(--gold);
+      font-size: 20px;
+      padding: 15px 36px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #5c3413 0%, #381e09 100%);
+      border: 1.5px solid var(--gold);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+
+    .game-title {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--gold);
+      letter-spacing: 0.8px;
+    }
+
+    .wallet-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stat-pill {
+      background: rgba(10, 15, 22, 0.85);
+      border: 1px solid rgba(255, 212, 59, 0.45);
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .stat-pill span {
+      color: var(--gold);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn-sm {
+      padding: 6px 11px;
+      font-size: 12px;
+      border-radius: 8px;
+      background: #17202c;
+      border-color: #475569;
+    }
+
+    .btn-sm.active-toggle {
+      border-color: var(--green);
+      color: #86efac;
+    }
+
+    .stage-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: radial-gradient(circle at center, rgba(24, 110, 64, 0.55) 0%, rgba(8, 22, 16, 0.92) 78%);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    canvas#gameCanvas {
+      width: 100%;
+      max-width: 540px;
+      height: auto;
+      aspect-ratio: 540 / 320;
+      border-radius: 12px;
+      touch-action: none;
+      display: block;
+    }
+
+    .status-box {
+      width: 100%;
+      background: #090d12;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      min-height: 58px;
+    }
+
+    .status-texts {
+      flex: 1;
+    }
+
+    .status-main {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .status-sub {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 3px;
+      min-height: 18px;
+    }
+
+    .countdown-badge {
+      background: #11261a;
+      border: 1.5px solid var(--green);
+      color: #86efac;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .controls-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .row-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .row-action {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-tai {
+      background: var(--tai-bg);
+      border-color: #991b1b;
+      color: #fecaca;
+      font-size: 17px;
+    }
+
+    .btn-tai.selected {
+      background: #dc2626;
+      border-color: var(--gold);
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(255, 212, 59, 0.35);
+    }
+
+    .btn-xiu {
+      background: var(--xiu-bg);
+      border-color: #075985;
+      color: #bae6fd;
+      font-size: 17px;
+    }
+
+    .btn-xiu.selected {
+      background: #0284c7;
+      border-color: var(--gold);
+      color: #fff;
+      box-shadow: 0 0 0 2px rgba(255, 212, 59, 0.35);
+    }
+
+    .btn-mg {
+      background: #0f172a;
+      border-color: #334155;
+      font-size: 14px;
+      padding: 10px 8px;
+    }
+
+    .btn-mg.selected {
+      background: #334155;
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-confirm {
+      background: #7e22ce;
+      border-color: #c084fc;
+      color: #fff;
+    }
+
+    .btn-confirm.confirmed {
+      background: #15803d;
+      border-color: #86efac;
+      color: #dcfce7;
+    }
+
+    .btn-allin {
+      background: #991b1b;
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-vault {
+      background: #0e7490;
+      border-color: #67e8f9;
+      color: #ecfeff;
+    }
+
+    .btn-rejoin-wrap {
+      display: none;
+      margin-bottom: 12px;
+    }
+
+    .btn-rejoin-wrap.visible {
+      display: block;
+    }
+
+    .btn-rejoin {
+      width: 100%;
+      background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%);
+      border-color: #fef08a;
+      color: #1c1917;
+      font-size: 16px;
+      padding: 13px 18px;
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.25);
+    }
+
+    .history-panel {
+      background: #090d12;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .cau-line {
+      font-size: 14px;
+      font-weight: 700;
+      color: #67e8f9;
+      margin-bottom: 6px;
+    }
+
+    .history-caption {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .beads-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .bead {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+    }
+
+    .bead.tai {
+      background: #dc2626;
+    }
+
+    .bead.xiu {
+      background: #0284c7;
+    }
+
+    .bead.latest {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px var(--gold);
+      transform: scale(1.06);
+    }
+
+    .footer-hint {
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .screen {
+        padding: 14px;
+      }
+
+      .row-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .row-action {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <!-- Màn hình bắt đầu -->
+    <section id="startScreen" class="screen active">
+      <div class="start-box">
+        <div class="banner">
+          <h1>TÀI XỈU 11 TIN</h1>
+        </div>
+        <div class="rules-card">
+          <p><strong>Cách chơi:</strong> Chọn <strong>TÀI</strong> hoặc <strong>XỈU</strong>, chọn mệnh giá hoặc
+            <strong>ALL IN</strong>, bấm <strong>XÁC NHẬN CƯỢC</strong>, sau đó chờ phiên hoặc kéo bát để mở kết quả.
+          </p>
+          <p><strong>Luật điểm:</strong> <strong>XỈU</strong> từ <strong>3 – 10</strong> điểm, <strong>TÀI</strong> từ
+            <strong>11 – 18</strong> điểm (không tính Bão riêng).</p>
+          <p><strong>Két sắt &amp; Lưu dữ liệu:</strong> Gửi/rút xu an toàn vào két sắt; tiền xu, két sắt và lịch sử
+            phiên được tự động lưu trên trình duyệt.</p>
+        </div>
+        <button id="btnStart" class="btn btn-start" type="button">BẮT ĐẦU CHƠI</button>
+      </div>
+    </section>
+
+    <!-- Giao diện chơi chính -->
+    <section id="gameScreen" class="screen">
+      <div class="top-bar">
+        <div class="game-title">TÀI XỈU 11 TIN</div>
+        <div class="wallet-group">
+          <div class="stat-pill">Xu: <span id="xuVal">1000</span></div>
+          <div class="stat-pill">Két sắt: <span id="ketVal">0</span></div>
+          <div class="stat-pill">Cược: <span id="cuocVal">100</span></div>
+        </div>
+        <div class="top-actions">
+          <button id="btnSound" class="btn btn-sm active-toggle" type="button" title="Bật/Tắt âm thanh">Âm thanh:
+            BẬT</button>
+          <button id="btnResetSave" class="btn btn-sm" type="button" title="Đặt lại dữ liệu mặc định">Reset lưu</button>
+        </div>
+      </div>
+
+      <div class="stage-wrap">
+        <canvas id="gameCanvas" width="540" height="320"></canvas>
+      </div>
+
+      <div class="status-box">
+        <div class="status-texts">
+          <div id="statusMain" class="status-main">CHỌN TÀI/XỈU &amp; MỆNH GIÁ -&gt; BẤM [XÁC NHẬN CƯỢC]</div>
+          <div id="statusSub" class="status-sub"></div>
+        </div>
+        <div id="countdownBadge" class="countdown-badge">Auto: 20s</div>
+      </div>
+
+      <div id="rejoinWrap" class="btn-rejoin-wrap">
+        <button id="btnRejoin" class="btn btn-rejoin" type="button">CHƠI LẠI (NHẬN LẠI 1000 XU)</button>
+      </div>
+
+      <div class="controls-grid">
+        <div class="row-2">
+          <button id="btnTai" class="btn btn-tai" type="button">TÀI (11-18)</button>
+          <button id="btnXiu" class="btn btn-xiu" type="button">XỈU (3-10)</button>
+        </div>
+
+        <div class="row-4">
+          <button class="btn btn-mg" data-mg="50" type="button">50 XU</button>
+          <button class="btn btn-mg selected" data-mg="100" type="button">100 XU</button>
+          <button class="btn btn-mg" data-mg="200" type="button">200 XU</button>
+          <button class="btn btn-mg" data-mg="500" type="button">500 XU</button>
+        </div>
+
+        <div class="row-action">
+          <button id="btnConfirm" class="btn btn-confirm" type="button">XÁC NHẬN CƯỢC</button>
+          <button id="btnAllIn" class="btn btn-allin" type="button">ALL IN</button>
+        </div>
+
+        <div class="row-2">
+          <button id="btnDeposit" class="btn btn-vault" type="button">GỬI KÉT SẮT</button>
+          <button id="btnWithdraw" class="btn btn-vault" type="button">RÚT KÉT SẮT</button>
+        </div>
+      </div>
+
+      <div class="history-panel">
+        <div id="cauText" class="cau-line">CẦU: Đang tải...</div>
+        <div class="history-caption">Lịch sử (T: Tài 11-18, X: Xỉu 3-10 — viền vàng là phiên mới nhất):</div>
+        <div id="beadsRow" class="beads-row"></div>
+      </div>
+
+      <div class="footer-hint">
+        <span id="spinCounter">Lần xóc: 0</span>
+        <span>Phím tắt: [T] Tài • [X] Xỉu • [F/Enter] Xác nhận • [A] All-in • [G/R] Két sắt • [W] Mở bát</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = "taixiu_11_tin_save_v1";
+      const MAX_HIST = 200;
+      const CHU_KY_AUTO_MS = 20000;
+      const INITIAL_XU = 1000;
+      const WIN_PROBABILITY = 0.45;
+      const PAYOUT_RATE = 0.98;
+
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const startScreen = document.getElementById("startScreen");
+      const gameScreen = document.getElementById("gameScreen");
+      const btnStart = document.getElementById("btnStart");
+      const btnSound = document.getElementById("btnSound");
+      const btnResetSave = document.getElementById("btnResetSave");
+
+      const xuVal = document.getElementById("xuVal");
+      const ketVal = document.getElementById("ketVal");
+      const cuocVal = document.getElementById("cuocVal");
+      const statusMain = document.getElementById("statusMain");
+      const statusSub = document.getElementById("statusSub");
+      const countdownBadge = document.getElementById("countdownBadge");
+      const rejoinWrap = document.getElementById("rejoinWrap");
+      const btnRejoin = document.getElementById("btnRejoin");
+
+      const btnTai = document.getElementById("btnTai");
+      const btnXiu = document.getElementById("btnXiu");
+      const mgButtons = Array.from(document.querySelectorAll(".btn-mg"));
+      const btnConfirm = document.getElementById("btnConfirm");
+      const btnAllIn = document.getElementById("btnAllIn");
+      const btnDeposit = document.getElementById("btnDeposit");
+      const btnWithdraw = document.getElementById("btnWithdraw");
+
+      const cauText = document.getElementById("cauText");
+      const beadsRow = document.getElementById("beadsRow");
+      const spinCounter = document.getElementById("spinCounter");
+
+      // 1-based dice array d[1..3]
+      const d = [0, 2, 3, 5];
+      let showDice = [0, 2, 3, 5];
+      let ox = [0, 0, 0, 0];
+      let oy = [0, 0, 0, 0];
+
+      let soLanXoc = 0;
+      let hist = [0]; // 1-based: 1 = TAI, 2 = XIU
+      let xu = INITIAL_XU;
+      let ketSat = 0;
+      let tienCuoc = 100;
+      let cuaChon = 0; // 0 = chưa chọn, 1 = TÀI, 2 = XỈU
+      let ketQuaSo = 0; // 1 = TÀI, 2 = XỈU
+
+      let daXacNhanCuoc = false;
+      let cuaDaXacNhan = 0;
+      let tienDaXacNhan = 0;
+
+      let daBatDau = false;
+      let dangXoc = false;
+      let dangCheBat = false;
+      let daCongBo = false;
+      let soundEnabled = true;
+
+      let mocThoiGianCuoi = performance.now();
+      let giayConLaiTruoc = -1;
+
+      const DIA_X = 270;
+      const DIA_Y = 160;
+      const R_DIA = 92;
+      const DICE_SIZE = 38;
+      const TAM_DX = [0, 0, -28, 28];
+      const TAM_DY = [0, -26, 20, 20];
+
+      let batOffsetX = 0;
+      let batOffsetY = 0;
+      let dangKeoChuot = false;
+      let pointerIdActive = null;
+      let lastPX = 0;
+      let lastPY = 0;
+
+      let mainMessage = "CHỌN TÀI/XỈU & MỆNH GIÁ -> BẤM [XÁC NHẬN CƯỢC]";
+      let mainColor = "#ffd43b";
+      let subMessage = "";
+      let subColor = "#e2e8f0";
+      let cauMessage = "";
+      let cauColor = "#67e8f9";
+
+      // Web Audio sound effects
+      let audioCtx = null;
+      function playTone(freq, duration, type = "sine", gainVal = 0.06, delaySec = 0) {
+        if (!soundEnabled) return;
+        try {
+          if (!audioCtx) {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return;
+            audioCtx = new AudioContextClass();
+          }
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+          }
+          const now = audioCtx.currentTime + delaySec;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(gainVal, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + duration);
+        } catch (_) { }
+      }
+
+      function playClickSound() {
+        playTone(540, 0.045, "triangle", 0.045);
+      }
+
+      function playShakeTick(step) {
+        playTone(210 + (step % 4) * 45, 0.035, "square", 0.03);
+      }
+
+      function playWinSound() {
+        playTone(587.33, 0.11, "triangle", 0.07, 0);
+        playTone(783.99, 0.14, "triangle", 0.07, 0.09);
+        playTone(1046.5, 0.22, "triangle", 0.08, 0.18);
+      }
+
+      function playLoseSound() {
+        playTone(311.13, 0.14, "sawtooth", 0.05, 0);
+        playTone(233.08, 0.22, "sawtooth", 0.05, 0.12);
+      }
+
+      function khoiTaoLichSuMau() {
+        const mau = [0, 1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2];
+        hist = [0];
+        for (let i = 1; i <= 14; i++) {
+          hist.push(mau[i]);
+        }
+      }
+
+      function themVaoLichSu(kq) {
+        if (hist.length - 1 < MAX_HIST) {
+          hist.push(kq);
+        } else {
+          for (let i = 1; i < MAX_HIST; i++) {
+            hist[i] = hist[i + 1];
+          }
+          hist[MAX_HIST] = kq;
+        }
+      }
+
+      function capNhatNhanDienCau() {
+        const nHist = hist.length - 1;
+        if (nHist <= 0) {
+          cauMessage = "CẦU: Chưa có dữ liệu";
+          cauColor = "#94a3b8";
+          return;
+        }
+
+        const cuoi = hist[nHist];
+        let doDaiBet = 1;
+        for (let i = nHist - 1; i >= 1; i--) {
+          if (hist[i] === cuoi) doDaiBet++;
+          else break;
+        }
+        if (doDaiBet >= 3) {
+          cauMessage = `CẦU BỆT: ${cuoi === 1 ? "TÀI" : "XỈU"} (${doDaiBet} phiên liên tiếp)`;
+          cauColor = cuoi === 1 ? "#ff7875" : "#67e8f9";
+          return;
+        }
+
+        if (nHist >= 4) {
+          const a = hist[nHist - 3];
+          const b = hist[nHist - 2];
+          const c = hist[nHist - 1];
+          const e = hist[nHist];
+          if (a === b && c === e && a !== c) {
+            let soCap = 2;
+            if (nHist >= 6 && hist[nHist - 5] === hist[nHist - 4] && hist[nHist - 4] !== a) {
+              soCap = 3;
+            }
+            cauMessage = `CẦU 2-2: Đang phát triển (${soCap} cặp)`;
+            cauColor = "#ffd43b";
+            return;
+          }
+        }
+
+        if (nHist >= 4) {
+          let hopLe11 = true;
+          let nhip = 1;
+          for (let i = nHist; i >= 2; i--) {
+            if (hist[i] === hist[i - 1]) {
+              if (i >= nHist - 2) hopLe11 = false;
+              break;
+            }
+            if (i >= nHist - 2) nhip++;
+            else if (hist[i] !== hist[i + 2]) break;
+            else nhip++;
+          }
+          if (hopLe11 && nhip >= 4) {
+            cauMessage = `CẦU 1-1: Xen kẽ ${nhip} phiên gần nhất`;
+            cauColor = "#86efac";
+            return;
+          }
+        }
+
+        cauMessage = "CẦU: Biến động / Chưa rõ dạng cầu";
+        cauColor = "#f8fafc";
+      }
+
+      function luuDuLieuNguoiDung() {
+        try {
+          const nHist = Math.min(MAX_HIST, Math.max(0, hist.length - 1));
+          const cleanHist = [];
+          for (let i = 1; i <= nHist; i++) {
+            if (hist[i] === 1 || hist[i] === 2) cleanHist.push(hist[i]);
+          }
+          const payload = {
+            xu: Math.max(0, Math.floor(xu)),
+            ketSat: Math.max(0, Math.floor(ketSat)),
+            tienCuoc: Math.max(1, Math.floor(tienCuoc)),
+            soLanXoc: Math.max(0, Math.floor(soLanXoc)),
+            hist: cleanHist
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function taiDuLieuNguoiDung() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return false;
+          const data = JSON.parse(raw);
+          if (!data || typeof data !== "object") return false;
+          if (typeof data.xu !== "number" || typeof data.ketSat !== "number" || typeof data.tienCuoc !== "number") {
+            return false;
+          }
+          if (data.xu < 0 || data.ketSat < 0 || data.tienCuoc <= 0) return false;
+
+          const loadedHist = [0];
+          if (Array.isArray(data.hist)) {
+            for (let i = 0; i < Math.min(data.hist.length, MAX_HIST); i++) {
+              const val = data.hist[i];
+              if (val === 1 || val === 2) loadedHist.push(val);
+            }
+          }
+
+          xu = Math.floor(data.xu);
+          ketSat = Math.floor(data.ketSat);
+          tienCuoc = Math.floor(data.tienCuoc);
+          soLanXoc = typeof data.soLanXoc === "number" && data.soLanXoc >= 0 ? Math.floor(data.soLanXoc) : 0;
+          hist = loadedHist;
+
+          if (xu > 0 && tienCuoc > xu) {
+            tienCuoc = xu;
+          }
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+
+      function resetDuLieuVeMacDinh() {
+        playClickSound();
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch (_) { }
+        xu = INITIAL_XU;
+        ketSat = 0;
+        tienCuoc = 100;
+        cuaChon = 0;
+        ketQuaSo = 0;
+        soLanXoc = 0;
+        daXacNhanCuoc = false;
+        cuaDaXacNhan = 0;
+        tienDaXacNhan = 0;
+        dangCheBat = false;
+        daCongBo = false;
+        dangKeoChuot = false;
+        batOffsetX = 0;
+        batOffsetY = 0;
+        d[1] = 2; d[2] = 3; d[3] = 5;
+        showDice = [0, 2, 3, 5];
+        ox = [0, 0, 0, 0];
+        oy = [0, 0, 0, 0];
+        khoiTaoLichSuMau();
+        capNhatNhanDienCau();
+        mocThoiGianCuoi = performance.now();
+        giayConLaiTruoc = -1;
+        mainMessage = "ĐÃ ĐẶT LẠI DỮ LIỆU MẶC ĐỊNH (1000 XU)";
+        mainColor = "#86efac";
+        subMessage = "";
+        renderAll();
+      }
+
+      function choiLaiKhiHetTien() {
+        if (xu > 0 || ketSat > 0 || dangXoc || dangCheBat) return;
+        playClickSound();
+        xu = INITIAL_XU;
+        tienCuoc = 100;
+        cuaChon = 0;
+        ketQuaSo = 0;
+        daXacNhanCuoc = false;
+        cuaDaXacNhan = 0;
+        tienDaXacNhan = 0;
+        daCongBo = false;
+        batOffsetX = 0;
+        batOffsetY = 0;
+        dangKeoChuot = false;
+        mainMessage = "CHÀO MỪNG QUAY LẠI! ĐÃ NHẬN 1000 XU";
+        mainColor = "#86efac";
+        subMessage = "Chọn TÀI/XỈU & mệnh giá để tiếp tục.";
+        subColor = "#e2e8f0";
+        mocThoiGianCuoi = performance.now();
+        giayConLaiTruoc = -1;
+        luuDuLieuNguoiDung();
+        renderAll();
+      }
+
+      function layGiayConLai() {
+        if (!daBatDau || dangCheBat || dangXoc) return -1;
+        const daTroi = performance.now() - mocThoiGianCuoi;
+        if (daTroi >= CHU_KY_AUTO_MS) return 0;
+        return Math.ceil((CHU_KY_AUTO_MS - daTroi) / 1000);
+      }
+
+      function sinhXucXacTheoTiLe() {
+        const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
+        if (cuaXet === 0) {
+          for (let i = 1; i <= 3; i++) {
+            d[i] = Math.floor(Math.random() * 6) + 1;
+          }
+          return;
+        }
+
+        const nguoiChoiThang = Math.random() < WIN_PROBABILITY;
+        const mucTieu = nguoiChoiThang ? cuaXet : (cuaXet === 1 ? 2 : 1);
+
+        while (true) {
+          d[1] = Math.floor(Math.random() * 6) + 1;
+          d[2] = Math.floor(Math.random() * 6) + 1;
+          d[3] = Math.floor(Math.random() * 6) + 1;
+          const sum = d[1] + d[2] + d[3];
+          if (mucTieu === 1 && sum >= 11) break;
+          if (mucTieu === 2 && sum <= 10) break;
+        }
+      }
+
+      function chuanBiKetQuaSauMoBat() {
+        const tong = d[1] + d[2] + d[3];
+        if (tong >= 11) {
+          ketQuaSo = 1;
+          mainMessage = `TÀI - Tổng ${tong} điểm!`;
+          mainColor = "#ff7875";
+        } else {
+          ketQuaSo = 2;
+          mainMessage = `XỈU - Tổng ${tong} điểm!`;
+          mainColor = "#67e8f9";
+        }
+        subMessage = "";
+      }
+
+      function apDungKetQuaVaTinhXu() {
+        const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
+        const cuocXet = daXacNhanCuoc ? tienDaXacNhan : tienCuoc;
+        const muc = Math.min(xu, cuocXet);
+
+        if (cuaXet === 0) {
+          subMessage = "Chưa đặt cửa nên không tính xu.";
+          subColor = "#94a3b8";
+        } else if (cuaXet === ketQuaSo) {
+          let tienLai = Math.floor(muc * PAYOUT_RATE);
+          if (tienLai < 1 && muc > 0) tienLai = 1;
+          xu += tienLai;
+          subMessage = `CHUẨN XÁC! Bạn thắng +${tienLai} xu!`;
+          subColor = "#86efac";
+          playWinSound();
+        } else {
+          xu = Math.max(0, xu - muc);
+          subMessage = `Hơi tiếc! Bạn thua -${muc} xu.`;
+          subColor = "#ff7875";
+          playLoseSound();
+        }
+
+        if (xu > 0 && tienCuoc > xu) {
+          tienCuoc = xu;
+        }
+      }
+
+      function chonCua(cua) {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        cuaChon = cua;
+        daXacNhanCuoc = false;
+        mainMessage = `CHỌN: ${cua === 1 ? "TÀI" : "XỈU"} | MỨC: ${tienCuoc} XU -> BẤM [XÁC NHẬN CƯỢC]`;
+        mainColor = "#86efac";
+        subMessage = "";
+        renderAll();
+      }
+
+      function chonMenhGia(val) {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        tienCuoc = val;
+        daXacNhanCuoc = false;
+        mainMessage = `CHỌN: ${cuaChon === 1 ? "TÀI" : (cuaChon === 2 ? "XỈU" : "CHƯA CHỌN")} | MỨC: ${tienCuoc} XU -> BẤM [XÁC NHẬN CƯỢC]`;
+        mainColor = "#86efac";
+        subMessage = "";
+        renderAll();
+      }
+
+      function bamAllIn() {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        if (xu <= 0) {
+          mainMessage = ketSat > 0
+            ? "HẾT XU! BẤM [RÚT KÉT SẮT] ĐỂ LẤY TIỀN"
+            : "ĐÃ HẾT XU! BẤM [CHƠI LẠI] ĐỂ NHẬN LẠI 1000 XU";
+          mainColor = "#ff7875";
+          renderAll();
+          return;
+        }
+        tienCuoc = xu;
+        daXacNhanCuoc = false;
+        mainMessage = `ALL IN: ${tienCuoc} XU! CHỌN CỬA & BẤM [XÁC NHẬN CƯỢC]`;
+        mainColor = "#ff7875";
+        subMessage = "";
+        renderAll();
+      }
+
+      function xacNhanCuocHienTai() {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        if (xu <= 0) {
+          mainMessage = ketSat > 0
+            ? "HẾT XU! BẤM [RÚT KÉT SẮT] ĐỂ LẤY TIỀN"
+            : "ĐÃ HẾT XU! BẤM [CHƠI LẠI] ĐỂ NHẬN LẠI 1000 XU";
+          mainColor = "#ff7875";
+          renderAll();
+          return;
+        }
+        if (cuaChon === 0) {
+          mainMessage = "HÃY CHỌN [TÀI] HOẶC [XỈU] TRƯỚC KHI XÁC NHẬN!";
+          mainColor = "#ff7875";
+          renderAll();
+          return;
+        }
+
+        const mucThucTe = Math.min(xu, tienCuoc);
+        daXacNhanCuoc = true;
+        cuaDaXacNhan = cuaChon;
+        tienDaXacNhan = mucThucTe;
+        mainMessage = `ĐÃ XÁC NHẬN: ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} - ${tienDaXacNhan} XU! CHỜ XÓC`;
+        mainColor = "#86efac";
+        subMessage = "";
+        renderAll();
+      }
+
+      function guiVaoKet() {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        if (xu <= 0) {
+          mainMessage = "KHÔNG CÒN XU ĐỂ GỬI VÀO KÉT SẮT!";
+          mainColor = "#ff7875";
+        } else {
+          const soGui = Math.min(xu, tienCuoc);
+          xu -= soGui;
+          ketSat += soGui;
+          daXacNhanCuoc = false;
+          if (xu > 0 && tienCuoc > xu) tienCuoc = xu;
+          luuDuLieuNguoiDung();
+          mainMessage = `ĐÃ GỬI +${soGui} XU VÀO KÉT SẮT (Tổng két: ${ketSat} xu)`;
+          mainColor = "#67e8f9";
+        }
+        renderAll();
+      }
+
+      function rutTuKet() {
+        if (dangCheBat || dangXoc) return;
+        playClickSound();
+        if (ketSat <= 0) {
+          mainMessage = "KÉT SẮT ĐANG TRỐNG, CHƯA CÓ XU ĐỂ RÚT!";
+          mainColor = "#ff7875";
+        } else {
+          const soRut = Math.min(ketSat, tienCuoc);
+          ketSat -= soRut;
+          xu += soRut;
+          daXacNhanCuoc = false;
+          luuDuLieuNguoiDung();
+          mainMessage = `ĐÃ RÚT +${soRut} XU TỪ KÉT SẮT (Còn trong két: ${ketSat} xu)`;
+          mainColor = "#86efac";
+        }
+        renderAll();
+      }
+
+      function kiemTraMoHetBat() {
+        if (!dangCheBat || daCongBo) return;
+        const kc = Math.hypot(batOffsetX, batOffsetY);
+        if (kc >= 115) {
+          dangCheBat = false;
+          dangKeoChuot = false;
+          daCongBo = true;
+          batOffsetX = 140;
+          batOffsetY = -20;
+
+          chuanBiKetQuaSauMoBat();
+          apDungKetQuaVaTinhXu();
+          themVaoLichSu(ketQuaSo);
+          capNhatNhanDienCau();
+          luuDuLieuNguoiDung();
+          daXacNhanCuoc = false;
+
+          mocThoiGianCuoi = performance.now();
+          giayConLaiTruoc = -1;
+          renderAll();
+        }
+      }
+
+      function moBatBangPhimW() {
+        if (!dangCheBat || daCongBo || dangXoc) return;
+        batOffsetY -= 35;
+        mainMessage = "ĐANG KÉO BÁT...";
+        mainColor = "#67e8f9";
+        kiemTraMoHetBat();
+        renderAll();
+      }
+
+      function chayHoatAnhXoc() {
+        if (dangXoc) return;
+        dangXoc = true;
+        dangCheBat = false;
+        daCongBo = false;
+        dangKeoChuot = false;
+        batOffsetX = 0;
+        batOffsetY = 0;
+        subMessage = "";
+
+        if (!daXacNhanCuoc && cuaChon !== 0 && xu > 0) {
+          daXacNhanCuoc = true;
+          cuaDaXacNhan = cuaChon;
+          tienDaXacNhan = Math.min(xu, tienCuoc);
+        }
+
+        mainMessage = "ĐANG XÓC XÚC XẮC...";
+        mainColor = "#67e8f9";
+        renderAll();
+
+        const totalSteps = 22;
+        let step = 0;
+        const timer = setInterval(() => {
+          step++;
+          const huong = step % 2 === 0 ? 1 : -1;
+          for (let i = 1; i <= 3; i++) {
+            const pha = (step + i) % 2 === 0 ? 1 : -1;
+            ox[i] = huong * (8 + i * 2);
+            oy[i] = pha * 8;
+            showDice[i] = Math.floor(Math.random() * 6) + 1;
+          }
+          playShakeTick(step);
+          drawCanvas();
+
+          if (step >= totalSteps) {
+            clearInterval(timer);
+            sinhXucXacTheoTiLe();
+            ox = [0, 0, 0, 0];
+            oy = [0, 0, 0, 0];
+            showDice = [0, d[1], d[2], d[3]];
+            soLanXoc++;
+            dangXoc = false;
+            dangCheBat = true;
+            batOffsetX = 0;
+            batOffsetY = 0;
+
+            if (daXacNhanCuoc && cuaDaXacNhan !== 0) {
+              mainMessage = `ĐÃ CƯỢC ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} (${tienDaXacNhan} XU) - KÉO BÁT RA ĐỂ BIẾT KẾT QUẢ!`;
+            } else {
+              mainMessage = "ĐÃ CHE BÁT - KÉO BÁT RA ĐỂ BIẾT KẾT QUẢ!";
+            }
+            mainColor = "#ffd43b";
+            mocThoiGianCuoi = performance.now();
+            giayConLaiTruoc = -1;
+            renderAll();
+          }
+        }, 45);
+      }
+
+      function drawDie(x, y, size, mat) {
+        ctx.save();
+        ctx.fillStyle = "#ffffff";
+        ctx.strokeStyle = "#334155";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(x, y, size, size, 7);
+        ctx.fill();
+        ctx.stroke();
+
+        const mid = size / 2;
+        const left = size / 4;
+        const right = (size * 3) / 4;
+        const r = Math.max(2.5, size / 10.5);
+
+        const drawPip = (px, py, isRed) => {
+          ctx.beginPath();
+          ctx.fillStyle = isRed ? "#dc2626" : "#0f172a";
+          ctx.arc(x + px, y + py, r + (isRed ? 1 : 0), 0, Math.PI * 2);
+          ctx.fill();
+        };
+
+        if (mat === 1 || mat === 3 || mat === 5) drawPip(mid, mid, true);
+        if (mat >= 2) {
+          drawPip(left, left, false);
+          drawPip(right, right, false);
+        }
+        if (mat >= 4) {
+          drawPip(right, left, false);
+          drawPip(left, right, false);
+        }
+        if (mat === 6) {
+          drawPip(left, mid, false);
+          drawPip(right, mid, false);
+        }
+        ctx.restore();
+      }
+
+      function drawBowl(offsetX, offsetY) {
+        const cx = DIA_X + offsetX;
+        const cy = DIA_Y + offsetY;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, R_DIA + 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#1d4ed8";
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#e2e8f0";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy - 3, R_DIA - 16, 0, Math.PI * 2);
+        ctx.fillStyle = "#38bdf8";
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#f8fafc";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy - 5, 13, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffd43b";
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Outer rim of plate
+        ctx.beginPath();
+        ctx.arc(DIA_X, DIA_Y, R_DIA + 12, 0, Math.PI * 2);
+        ctx.fillStyle = "#334155";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#94a3b8";
+        ctx.stroke();
+
+        // Inner plate
+        ctx.beginPath();
+        ctx.arc(DIA_X, DIA_Y, R_DIA, 0, Math.PI * 2);
+        ctx.fillStyle = "#cbd5e1";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+
+        for (let i = 1; i <= 3; i++) {
+          const dieCenterX = DIA_X + TAM_DX[i] + ox[i];
+          const dieCenterY = DIA_Y + TAM_DY[i] + oy[i];
+          drawDie(dieCenterX - DICE_SIZE / 2, dieCenterY - DICE_SIZE / 2, DICE_SIZE, showDice[i]);
+        }
+
+        if (dangCheBat) {
+          drawBowl(batOffsetX, batOffsetY);
+        }
+
+        ctx.font = "600 12px 'Segoe UI', Arial, sans-serif";
+        ctx.fillStyle = "#cbd5e1";
+        ctx.textAlign = "center";
+        if (dangCheBat) {
+          ctx.fillText("Kéo bát bằng chuột hoặc cảm ứng sang bên để mở", DIA_X, canvas.height - 10);
+        } else {
+          ctx.fillText("Đĩa kết quả Tài Xỉu 11 Tin", DIA_X, canvas.height - 10);
+        }
+      }
+
+      function renderBeads() {
+        beadsRow.innerHTML = "";
+        const nHist = hist.length - 1;
+        const hienThi = Math.min(18, nHist);
+        const startIdx = nHist - hienThi + 1;
+
+        for (let i = 0; i < hienThi; i++) {
+          const val = hist[startIdx + i];
+          const el = document.createElement("div");
+          el.className = `bead ${val === 1 ? "tai" : "xiu"}${i === hienThi - 1 ? " latest" : ""}`;
+          el.textContent = val === 1 ? "T" : "X";
+          beadsRow.appendChild(el);
+        }
+      }
+
+      function renderUI() {
+        xuVal.textContent = String(xu);
+        ketVal.textContent = String(ketSat);
+        cuocVal.textContent = String(daXacNhanCuoc && cuaDaXacNhan !== 0 ? tienDaXacNhan : tienCuoc);
+
+        statusMain.textContent = mainMessage;
+        statusMain.style.color = mainColor;
+        statusSub.textContent = subMessage;
+        statusSub.style.color = subColor;
+
+        cauText.textContent = cauMessage;
+        cauText.style.color = cauColor;
+        spinCounter.textContent = `Lần xóc: ${soLanXoc}`;
+
+        const sCon = layGiayConLai();
+        if (sCon >= 0) {
+          countdownBadge.style.display = "inline-block";
+          countdownBadge.textContent = `Auto: ${sCon}s`;
+        } else if (dangCheBat) {
+          countdownBadge.style.display = "inline-block";
+          countdownBadge.textContent = "Đang che bát";
+        } else {
+          countdownBadge.style.display = "none";
+        }
+
+        const hetSachTien = xu <= 0 && ketSat <= 0 && !dangXoc && !dangCheBat;
+        rejoinWrap.classList.toggle("visible", hetSachTien);
+
+        btnTai.classList.toggle("selected", cuaChon === 1);
+        btnXiu.classList.toggle("selected", cuaChon === 2);
+
+        mgButtons.forEach((b) => {
+          const v = Number(b.dataset.mg);
+          b.classList.toggle("selected", tienCuoc === v && tienCuoc !== xu);
+          b.disabled = dangCheBat || dangXoc;
+        });
+
+        btnTai.disabled = dangCheBat || dangXoc;
+        btnXiu.disabled = dangCheBat || dangXoc;
+        btnConfirm.disabled = dangCheBat || dangXoc;
+        btnAllIn.disabled = dangCheBat || dangXoc;
+        btnDeposit.disabled = dangCheBat || dangXoc;
+        btnWithdraw.disabled = dangCheBat || dangXoc;
+
+        btnConfirm.classList.toggle("confirmed", daXacNhanCuoc);
+        btnConfirm.textContent = daXacNhanCuoc ? "ĐÃ XÁC NHẬN" : "XÁC NHẬN CƯỢC";
+
+        renderBeads();
+      }
+
+      function renderAll() {
+        renderUI();
+        drawCanvas();
+      }
+
+      function getCanvasCoords(evt) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+          x: (evt.clientX - rect.left) * scaleX,
+          y: (evt.clientY - rect.top) * scaleY
+        };
+      }
+
+      function chamVaoBat(px, py) {
+        const cx = DIA_X + batOffsetX;
+        const cy = DIA_Y + batOffsetY;
+        return Math.hypot(px - cx, py - cy) <= R_DIA + 24;
+      }
+
+      canvas.addEventListener("pointerdown", (evt) => {
+        if (!dangCheBat || daCongBo || dangXoc) return;
+        const pt = getCanvasCoords(evt);
+        if (chamVaoBat(pt.x, pt.y)) {
+          dangKeoChuot = true;
+          pointerIdActive = evt.pointerId;
+          lastPX = pt.x;
+          lastPY = pt.y;
+          canvas.setPointerCapture(evt.pointerId);
+        }
+      });
+
+      canvas.addEventListener("pointermove", (evt) => {
+        if (!dangKeoChuot || evt.pointerId !== pointerIdActive || !dangCheBat || daCongBo) return;
+        const pt = getCanvasCoords(evt);
+        batOffsetX += pt.x - lastPX;
+        batOffsetY += pt.y - lastPY;
+        lastPX = pt.x;
+        lastPY = pt.y;
+        mainMessage = "ĐANG KÉO BÁT...";
+        mainColor = "#67e8f9";
+        kiemTraMoHetBat();
+        renderAll();
+      });
+
+      function ketThucKeoBat(evt) {
+        if (!dangKeoChuot || evt.pointerId !== pointerIdActive) return;
+        dangKeoChuot = false;
+        pointerIdActive = null;
+        kiemTraMoHetBat();
+        renderAll();
+      }
+
+      canvas.addEventListener("pointerup", ketThucKeoBat);
+      canvas.addEventListener("pointercancel", ketThucKeoBat);
+
+      btnStart.addEventListener("click", () => {
+        playClickSound();
+        daBatDau = true;
+        startScreen.classList.remove("active");
+        gameScreen.classList.add("active");
+        mocThoiGianCuoi = performance.now();
+        giayConLaiTruoc = -1;
+        renderAll();
+      });
+
+      btnSound.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        btnSound.textContent = soundEnabled ? "Âm thanh: BẬT" : "Âm thanh: TẮT";
+        btnSound.classList.toggle("active-toggle", soundEnabled);
+        if (soundEnabled) playClickSound();
+      });
+
+      btnResetSave.addEventListener("click", resetDuLieuVeMacDinh);
+      btnRejoin.addEventListener("click", choiLaiKhiHetTien);
+
+      btnTai.addEventListener("click", () => chonCua(1));
+      btnXiu.addEventListener("click", () => chonCua(2));
+      mgButtons.forEach((b) => {
+        b.addEventListener("click", () => chonMenhGia(Number(b.dataset.mg)));
+      });
+      btnConfirm.addEventListener("click", xacNhanCuocHienTai);
+      btnAllIn.addEventListener("click", bamAllIn);
+      btnDeposit.addEventListener("click", guiVaoKet);
+      btnWithdraw.addEventListener("click", rutTuKet);
+
+      window.addEventListener("keydown", (evt) => {
+        if (!daBatDau) {
+          if (evt.key === "Enter" || evt.key === " ") {
+            evt.preventDefault();
+            btnStart.click();
+          }
+          return;
+        }
+
+        const k = evt.key.toLowerCase();
+        if (!dangCheBat && !dangXoc) {
+          if (k === "t") chonCua(1);
+          else if (k === "x") chonCua(2);
+          else if (k === "a") bamAllIn();
+          else if (k === "g") guiVaoKet();
+          else if (k === "r") rutTuKet();
+          else if (k === "f" || evt.key === "Enter") {
+            evt.preventDefault();
+            xacNhanCuocHienTai();
+          }
+        } else if (dangCheBat && !daCongBo && !dangXoc && k === "w") {
+          moBatBangPhimW();
+        }
+      });
+
+      window.addEventListener("beforeunload", () => {
+        luuDuLieuNguoiDung();
+      });
+
+      setInterval(() => {
+        if (!daBatDau || dangCheBat || dangXoc) return;
+        const sNow = layGiayConLai();
+        if (performance.now() - mocThoiGianCuoi >= CHU_KY_AUTO_MS) {
+          chayHoatAnhXoc();
+        } else if (sNow !== giayConLaiTruoc) {
+          giayConLaiTruoc = sNow;
+          renderUI();
+        }
+      }, 150);
+
+      if (!taiDuLieuNguoiDung()) {
+        khoiTaoLichSuMau();
+      }
+      capNhatNhanDienCau();
+      renderAll();
+    })();
+  </script>
+</body>
+
+</html>
