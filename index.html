@@ -1,1438 +1,2361 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TÀI XỈU 11 TIN</title>
-  <style>
-    :root {
-      --bg-felt: #0d4a2b;
-      --bg-felt-dark: #072d1a;
-      --panel-bg: #111820;
-      --panel-border: #2c3e50;
-      --gold: #ffd43b;
-      --gold-dim: #b58d16;
-      --tai: #ff4d4f;
-      --tai-bg: #3b1316;
-      --xiu: #38bdf8;
-      --xiu-bg: #0f2c3d;
-      --green: #22c55e;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TÀI XỈU 11 TIN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #070b12;
+    --felt-center: #124734;
+    --felt-edge: #072219;
+    --panel: rgba(13, 19, 29, 0.88);
+    --panel-solid: #101722;
+    --gold-light: #ffe885;
+    --gold: #f5b82e;
+    --gold-dark: #9c6b12;
+    --tai-light: #ff6b6b;
+    --tai: #d92638;
+    --tai-dark: #6e0d17;
+    --xiu-light: #5ce1ff;
+    --xiu: #0284c7;
+    --xiu-dark: #083959;
+    --emerald: #10b981;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+  }
 
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-user-select: none;
-    }
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+  }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at top, #17693e 0%, var(--bg-felt) 52%, var(--bg-felt-dark) 100%);
-      color: var(--text);
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 14px;
-    }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(245, 184, 46, 0.14) 0%, transparent 45%),
+      radial-gradient(ellipse at center, #0e3829 0%, #071612 60%, #04070c 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    overflow-x: hidden;
+  }
 
-    .app-shell {
-      width: 100%;
-      max-width: 920px;
-      background: rgba(13, 20, 28, 0.92);
-      border: 2px solid var(--gold-dim);
-      border-radius: 16px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-      overflow: hidden;
-    }
+  /* Khung chính sòng bài */
+  .casino-frame {
+    width: 100%;
+    max-width: 1020px;
+    background: linear-gradient(180deg, rgba(18, 26, 38, 0.96) 0%, rgba(9, 14, 22, 0.98) 100%);
+    border: 2px solid var(--gold-dark);
+    border-radius: 22px;
+    box-shadow:
+      0 25px 70px rgba(0, 0, 0, 0.8),
+      inset 0 1px 0 rgba(255, 232, 133, 0.25);
+    overflow: hidden;
+    position: relative;
+  }
 
-    .screen {
-      display: none;
-      padding: 22px;
-    }
+  .screen {
+    display: none;
+  }
 
-    .screen.active {
-      display: block;
-    }
+  .screen.active {
+    display: block;
+  }
 
-    .start-box {
-      text-align: center;
-      padding: 20px 10px;
-    }
+  /* ==================== MÀN HÌNH ĐĂNG NHẬP ==================== */
+  .login-stage {
+    padding: 32px 20px 36px;
+    background:
+      radial-gradient(circle at 50% 15%, rgba(16, 185, 129, 0.14), transparent 55%),
+      radial-gradient(circle at 50% 85%, rgba(245, 184, 46, 0.1), transparent 50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .banner {
-      background: linear-gradient(135deg, #5c3413 0%, #381e09 100%);
-      border: 2px solid var(--gold);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-    }
+  .crown-logo {
+    text-align: center;
+    margin-bottom: 22px;
+  }
 
-    .banner h1 {
-      margin: 0;
-      font-size: clamp(26px, 5vw, 42px);
-      color: var(--gold);
-      letter-spacing: 2px;
-      text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
-    }
+  .crown-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border-radius: 999px;
+    background: rgba(245, 184, 46, 0.12);
+    border: 1px solid rgba(245, 184, 46, 0.45);
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
 
-    .rules-card {
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      padding: 18px 22px;
-      text-align: left;
-      max-width: 680px;
-      margin: 0 auto 24px auto;
-      line-height: 1.65;
-    }
+  .crown-logo h1 {
+    margin: 0;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #fff6c2 0%, #f5b82e 52%, #b87a14 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 14px rgba(245, 184, 46, 0.35));
+  }
 
-    .rules-card p {
-      margin: 8px 0;
-      color: #e2e8f0;
-      font-size: 15px;
-    }
+  .login-card {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(14, 21, 32, 0.92);
+    border: 1.5px solid rgba(245, 184, 46, 0.45);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+  }
 
-    .rules-card strong {
-      color: var(--gold);
-    }
+  .login-card-title {
+    margin: 0 0 16px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--gold-light);
+    letter-spacing: 0.6px;
+  }
 
-    .btn {
-      border: 2px solid transparent;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
-      color: var(--text);
-      background: #1e293b;
-    }
+  .quick-accounts-wrap {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    background: rgba(8, 13, 20, 0.75);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+  }
 
-    .btn:hover:not(:disabled) {
-      filter: brightness(1.08);
-    }
+  .quick-accounts-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+  }
 
-    .btn:active:not(:disabled) {
-      transform: translateY(1px);
-    }
+  .auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: #070b11;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 14px;
+  }
 
-    .btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-    }
+  .auth-tab-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--muted);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
 
-    .btn-start {
-      background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
-      color: #052e16;
-      border-color: var(--gold);
-      font-size: 20px;
-      padding: 15px 36px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
-    }
+  .auth-tab-btn.active {
+    background: linear-gradient(180deg, rgba(245, 184, 46, 0.25) 0%, rgba(184, 122, 20, 0.18) 100%);
+    color: var(--gold-light);
+    border: 1px solid rgba(245, 184, 46, 0.5);
+  }
 
-    .top-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #5c3413 0%, #381e09 100%);
-      border: 1.5px solid var(--gold);
-      border-radius: 10px;
-      padding: 10px 14px;
-      margin-bottom: 14px;
-    }
+  .quick-accounts-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
 
-    .game-title {
-      font-weight: 800;
-      font-size: 18px;
-      color: var(--gold);
-      letter-spacing: 0.8px;
-    }
+  .acc-chip {
+    background: linear-gradient(180deg, #1e293b 0%, #111827 100%);
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
 
-    .wallet-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
+  .acc-chip:hover,
+  .acc-chip.active-chip {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    box-shadow: 0 0 12px rgba(245, 184, 46, 0.25);
+  }
 
-    .stat-pill {
-      background: rgba(10, 15, 22, 0.85);
-      border: 1px solid rgba(255, 212, 59, 0.45);
-      border-radius: 8px;
-      padding: 6px 11px;
-      font-size: 14px;
-      font-weight: 700;
-    }
+  .field-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
 
-    .stat-pill span {
-      color: var(--gold);
-    }
+  .field-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #cbd5e1;
+    margin-bottom: 6px;
+  }
 
-    .top-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+  .auth-input {
+    width: 100%;
+    background: #070b11;
+    border: 1.5px solid #293548;
+    border-radius: 11px;
+    padding: 12px 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    user-select: text;
+    -webkit-user-select: text;
+  }
 
-    .btn-sm {
-      padding: 6px 11px;
-      font-size: 12px;
-      border-radius: 8px;
-      background: #17202c;
-      border-color: #475569;
-    }
+  .auth-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(245, 184, 46, 0.16);
+  }
 
-    .btn-sm.active-toggle {
-      border-color: var(--green);
-      color: #86efac;
-    }
+  .auth-hint {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
 
-    .stage-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: radial-gradient(circle at center, rgba(24, 110, 64, 0.55) 0%, rgba(8, 22, 16, 0.92) 78%);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
+  .auth-hint strong {
+    color: var(--gold-light);
+  }
 
+  .auth-error {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ff6b6b;
+    min-height: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .btn-play-gold {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #241502;
+    background: linear-gradient(180deg, #ffe885 0%, #f5b82e 55%, #c98612 100%);
+    box-shadow:
+      0 6px 0 #7a4e06,
+      0 14px 28px rgba(245, 184, 46, 0.35);
+    cursor: pointer;
+    transition: transform 0.08s ease, filter 0.15s ease;
+  }
+
+  .btn-play-gold:hover {
+    filter: brightness(1.06);
+  }
+
+  .btn-play-gold:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 #7a4e06, 0 8px 16px rgba(245, 184, 46, 0.25);
+  }
+
+  .mini-rules {
+    margin-top: 20px;
+    max-width: 680px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .mini-rule-item {
+    background: rgba(15, 23, 36, 0.72);
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    padding: 11px 12px;
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.45;
+  }
+
+  .mini-rule-item strong {
+    display: block;
+    color: var(--gold-light);
+    margin-bottom: 3px;
+    font-size: 12px;
+  }
+
+  /* ==================== THANH HEADER SÒNG BÀI ==================== */
+  .hud-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 18px;
+    background: linear-gradient(180deg, #172233 0%, #0d141f 100%);
+    border-bottom: 1.5px solid rgba(245, 184, 46, 0.35);
+  }
+
+  .hud-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-emblem {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffe885, #b87a14);
+    color: #1f1302;
+    font-weight: 900;
+    font-size: 14px;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 12px rgba(245, 184, 46, 0.3);
+  }
+
+  .brand-name {
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    color: var(--gold-light);
+  }
+
+  .hud-wallets {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wallet-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #070b11;
+    border: 1px solid #263347;
+    border-radius: 999px;
+    padding: 6px 13px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .wallet-chip.user-pill {
+    border-color: rgba(245, 184, 46, 0.55);
+    background: rgba(245, 184, 46, 0.1);
+    color: var(--gold-light);
+  }
+
+  .wallet-chip .val {
+    color: var(--gold-light);
+    font-weight: 900;
+  }
+
+  .hud-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tool-btn {
+    background: #162030;
+    border: 1px solid #2e3e56;
+    color: #cbd5e1;
+    border-radius: 9px;
+    padding: 7px 11px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .tool-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    color: #fff;
+  }
+
+  .tool-btn.sound-on {
+    border-color: rgba(16, 185, 129, 0.6);
+    color: #6ee7b7;
+  }
+
+  /* ==================== BÀN CƯỢC TRUNG TÂM ==================== */
+  .table-felt {
+    padding: 16px 18px 18px;
+    background:
+      radial-gradient(ellipse at 50% 38%, #165941 0%, #0d3b2b 52%, #071e17 100%);
+    position: relative;
+  }
+
+  /* Thanh thông báo trạng thái & đồng hồ đếm ngược */
+  .marquee-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(6, 11, 18, 0.86);
+    border: 1.5px solid rgba(245, 184, 46, 0.4);
+    border-radius: 14px;
+    padding: 10px 16px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
+  }
+
+  .marquee-texts {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .marquee-main {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--gold-light);
+    letter-spacing: 0.3px;
+  }
+
+  .marquee-sub {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin-top: 2px;
+    min-height: 17px;
+  }
+
+  .timer-orb {
+    min-width: 96px;
+    text-align: center;
+    padding: 7px 12px;
+    border-radius: 11px;
+    background: linear-gradient(180deg, #0f2e22 0%, #081a13 100%);
+    border: 1.5px solid #10b981;
+    color: #6ee7b7;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.22);
+  }
+
+  .timer-orb.bowl-mode {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: linear-gradient(180deg, #332308 0%, #1c1304 100%);
+    box-shadow: 0 0 16px rgba(245, 184, 46, 0.25);
+  }
+
+  /* Sàn đấu 3 cột: TÀI - ĐĨA XÓC - XỈU */
+  .arena-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .bet-door {
+    height: 238px;
+    border-radius: 20px;
+    border: 2.5px solid transparent;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.12s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    font-family: inherit;
+    color: #fff;
+  }
+
+  .bet-door:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .bet-door:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+  }
+
+  /* Cửa TÀI */
+  .door-tai {
+    background:
+      radial-gradient(circle at 50% 25%, rgba(255, 107, 107, 0.32), transparent 68%),
+      linear-gradient(180deg, #59121b 0%, #2b070c 100%);
+    border-color: rgba(255, 107, 107, 0.45);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .door-tai.selected {
+    border-color: var(--gold-light);
+    box-shadow:
+      0 0 0 3px rgba(245, 184, 46, 0.45),
+      0 0 32px rgba(217, 38, 56, 0.65);
+    transform: translateY(-2px);
+  }
+
+  /* Cửa XỈU */
+  .door-xiu {
+    background:
+      radial-gradient(circle at 50% 25%, rgba(92, 225, 255, 0.3), transparent 68%),
+      linear-gradient(180deg, #0b3c5d 0%, #051c2e 100%);
+    border-color: rgba(92, 225, 255, 0.45);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .door-xiu.selected {
+    border-color: var(--gold-light);
+    box-shadow:
+      0 0 0 3px rgba(245, 184, 46, 0.45),
+      0 0 32px rgba(2, 132, 199, 0.65);
+    transform: translateY(-2px);
+  }
+
+  .door-tag {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .door-name {
+    font-size: clamp(34px, 4.5vw, 46px);
+    font-weight: 900;
+    letter-spacing: 3px;
+    line-height: 1;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
+  }
+
+  .door-tai .door-name {
+    background: linear-gradient(180deg, #ffffff 0%, #ff9999 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .door-xiu .door-name {
+    background: linear-gradient(180deg, #ffffff 0%, #99ecff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .door-range {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--gold-light);
+  }
+
+  .door-stake-badge {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 12px;
+    font-weight: 800;
+    color: #94a3b8;
+  }
+
+  .bet-door.selected .door-stake-badge {
+    background: rgba(245, 184, 46, 0.22);
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* Đĩa & Bát trung tâm */
+  .bowl-pedestal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  canvas#gameCanvas {
+    width: 310px;
+    height: 256px;
+    border-radius: 20px;
+    touch-action: none;
+    display: block;
+    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.28) 0%, rgba(0, 0, 0, 0.55) 100%);
+    border: 1.5px solid rgba(245, 184, 46, 0.3);
+    box-shadow: inset 0 4px 18px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Nút chơi lại khi hết sạch tiền */
+  .rejoin-banner {
+    display: none;
+    margin-bottom: 12px;
+  }
+
+  .rejoin-banner.visible {
+    display: block;
+  }
+
+  /* Khay chip cược & hành động */
+  .chip-deck {
+    background: rgba(8, 13, 21, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .chips-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+
+  /* Thiết kế chip sòng bài tròn/oval có viền khía */
+  .casino-chip {
+    position: relative;
+    border-radius: 14px;
+    padding: 10px 6px;
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+    border: 2px dashed rgba(255, 255, 255, 0.55);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.55), 0 8px 16px rgba(0, 0, 0, 0.35);
+    transition: transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .casino-chip span {
+    font-size: 10px;
+    font-weight: 700;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+  }
+
+  .casino-chip:hover:not(:disabled) {
+    transform: translateY(-2px);
+  }
+
+  .casino-chip:active:not(:disabled) {
+    transform: translateY(2px);
+  }
+
+  .casino-chip:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .chip-50 { background: linear-gradient(180deg, #059669 0%, #064e3b 100%); }
+  .chip-100 { background: linear-gradient(180deg, #2563eb 0%, #1e3a8a 100%); }
+  .chip-200 { background: linear-gradient(180deg, #9333ea 0%, #581c87 100%); }
+  .chip-500 { background: linear-gradient(180deg, #ea580c 0%, #7c2d12 100%); }
+  .chip-allin {
+    background: linear-gradient(180deg, #e11d48 0%, #881337 100%);
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+  }
+
+  .casino-chip.selected {
+    border-style: solid;
+    border-color: var(--gold-light);
+    box-shadow: 0 0 0 3px rgba(245, 184, 46, 0.45), 0 6px 18px rgba(245, 184, 46, 0.35);
+    transform: translateY(-3px);
+  }
+
+  .actions-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .action-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform 0.08s ease, filter 0.15s ease;
+  }
+
+  .action-btn:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  .action-btn:active:not(:disabled) {
+    transform: translateY(2px);
+  }
+
+  .action-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-confirm-vip {
+    background: linear-gradient(180deg, #ffe885 0%, #f5b82e 60%, #c98612 100%);
+    color: #261602;
+    box-shadow: 0 4px 0 #7a4e06;
+    font-size: 15px;
+  }
+
+  .btn-confirm-vip.confirmed {
+    background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+    color: #022c22;
+    box-shadow: 0 4px 0 #064e3b;
+  }
+
+  .btn-vault-vip {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: #7dd3fc;
+    border: 1.5px solid #0284c7;
+  }
+
+  /* ==================== BẢNG SOI CẦU VIP ==================== */
+  .roadmap-bar {
+    padding: 12px 18px 14px;
+    background: #090e16;
+    border-top: 1px solid #1e293b;
+  }
+
+  .roadmap-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+  }
+
+  .cau-pill {
+    font-size: 13px;
+    font-weight: 800;
+    color: #67e8f9;
+  }
+
+  .roadmap-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .stat-t { color: #ff6b6b; }
+  .stat-x { color: #5ce1ff; }
+
+  .beads-track {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+    padding: 8px 10px;
+    background: #05080d;
+    border: 1px solid #172030;
+    border-radius: 12px;
+  }
+
+  .bead {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.35), 0 2px 5px rgba(0, 0, 0, 0.6);
+  }
+
+  .bead.tai {
+    background: radial-gradient(circle at 35% 30%, #ff6b6b, #b91c1c);
+  }
+
+  .bead.xiu {
+    background: radial-gradient(circle at 35% 30%, #67e8f9, #0369a1);
+  }
+
+  .bead.latest {
+    outline: 2.5px solid var(--gold-light);
+    outline-offset: 1px;
+    transform: scale(1.1);
+  }
+
+  .hotkey-strip {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #64748b;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Responsive cho màn hình nhỏ / điện thoại */
+  @media (max-width: 780px) {
+    .arena-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    .bowl-pedestal {
+      grid-column: 1 / -1;
+      order: -1;
+    }
     canvas#gameCanvas {
       width: 100%;
-      max-width: 540px;
-      height: auto;
-      aspect-ratio: 540 / 320;
-      border-radius: 12px;
-      touch-action: none;
-      display: block;
+      max-width: 340px;
+      height: 230px;
     }
-
-    .status-box {
-      width: 100%;
-      background: #090d12;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      padding: 10px 14px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      min-height: 58px;
+    .bet-door {
+      height: 155px;
+      padding: 12px 10px;
     }
-
-    .status-texts {
-      flex: 1;
+    .mini-rules {
+      grid-template-columns: 1fr;
     }
+  }
 
-    .status-main {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--gold);
+  @media (max-width: 520px) {
+    .chips-row {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    .status-sub {
-      font-size: 13px;
-      color: #cbd5e1;
-      margin-top: 3px;
-      min-height: 18px;
-    }
-
-    .countdown-badge {
-      background: #11261a;
-      border: 1.5px solid var(--green);
-      color: #86efac;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-weight: 800;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .controls-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .row-2 {
-      display: grid;
+    .actions-row {
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
     }
-
-    .row-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+    .btn-confirm-vip {
+      grid-column: 1 / -1;
     }
-
-    .row-action {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 10px;
-    }
-
-    .btn-tai {
-      background: var(--tai-bg);
-      border-color: #991b1b;
-      color: #fecaca;
-      font-size: 17px;
-    }
-
-    .btn-tai.selected {
-      background: #dc2626;
-      border-color: var(--gold);
-      color: #fff;
-      box-shadow: 0 0 0 2px rgba(255, 212, 59, 0.35);
-    }
-
-    .btn-xiu {
-      background: var(--xiu-bg);
-      border-color: #075985;
-      color: #bae6fd;
-      font-size: 17px;
-    }
-
-    .btn-xiu.selected {
-      background: #0284c7;
-      border-color: var(--gold);
-      color: #fff;
-      box-shadow: 0 0 0 2px rgba(255, 212, 59, 0.35);
-    }
-
-    .btn-mg {
-      background: #0f172a;
-      border-color: #334155;
-      font-size: 14px;
-      padding: 10px 8px;
-    }
-
-    .btn-mg.selected {
-      background: #334155;
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .btn-confirm {
-      background: #7e22ce;
-      border-color: #c084fc;
-      color: #fff;
-    }
-
-    .btn-confirm.confirmed {
-      background: #15803d;
-      border-color: #86efac;
-      color: #dcfce7;
-    }
-
-    .btn-allin {
-      background: #991b1b;
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .btn-vault {
-      background: #0e7490;
-      border-color: #67e8f9;
-      color: #ecfeff;
-    }
-
-    .btn-rejoin-wrap {
-      display: none;
-      margin-bottom: 12px;
-    }
-
-    .btn-rejoin-wrap.visible {
-      display: block;
-    }
-
-    .btn-rejoin {
-      width: 100%;
-      background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%);
-      border-color: #fef08a;
-      color: #1c1917;
-      font-size: 16px;
-      padding: 13px 18px;
-      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.25);
-    }
-
-    .history-panel {
-      background: #090d12;
-      border: 1px solid var(--panel-border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
-    }
-
-    .cau-line {
-      font-size: 14px;
-      font-weight: 700;
-      color: #67e8f9;
-      margin-bottom: 6px;
-    }
-
-    .history-caption {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .beads-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .bead {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 13px;
-      color: #fff;
-      border: 2px solid rgba(255, 255, 255, 0.75);
-    }
-
-    .bead.tai {
-      background: #dc2626;
-    }
-
-    .bead.xiu {
-      background: #0284c7;
-    }
-
-    .bead.latest {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px var(--gold);
-      transform: scale(1.06);
-    }
-
-    .footer-hint {
-      font-size: 12px;
-      color: #cbd5e1;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    @media (max-width: 600px) {
-      .screen {
-        padding: 14px;
-      }
-
-      .row-4 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .row-action {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
-
 <body>
-  <div class="app-shell">
-    <!-- Màn hình bắt đầu -->
-    <section id="startScreen" class="screen active">
-      <div class="start-box">
-        <div class="banner">
-          <h1>TÀI XỈU 11 TIN</h1>
-        </div>
-        <div class="rules-card">
-          <p><strong>Cách chơi:</strong> Chọn <strong>TÀI</strong> hoặc <strong>XỈU</strong>, chọn mệnh giá hoặc
-            <strong>ALL IN</strong>, bấm <strong>XÁC NHẬN CƯỢC</strong>, sau đó chờ phiên hoặc kéo bát để mở kết quả.
-          </p>
-          <p><strong>Luật điểm:</strong> <strong>XỈU</strong> từ <strong>3 – 10</strong> điểm, <strong>TÀI</strong> từ
-            <strong>11 – 18</strong> điểm (không tính Bão riêng).</p>
-          <p><strong>Két sắt &amp; Lưu dữ liệu:</strong> Gửi/rút xu an toàn vào két sắt; tiền xu, két sắt và lịch sử
-            phiên được tự động lưu trên trình duyệt.</p>
-        </div>
-        <button id="btnStart" class="btn btn-start" type="button">BẮT ĐẦU CHƠI</button>
-      </div>
-    </section>
-
-    <!-- Giao diện chơi chính -->
-    <section id="gameScreen" class="screen">
-      <div class="top-bar">
-        <div class="game-title">TÀI XỈU 11 TIN</div>
-        <div class="wallet-group">
-          <div class="stat-pill">Xu: <span id="xuVal">1000</span></div>
-          <div class="stat-pill">Két sắt: <span id="ketVal">0</span></div>
-          <div class="stat-pill">Cược: <span id="cuocVal">100</span></div>
-        </div>
-        <div class="top-actions">
-          <button id="btnSound" class="btn btn-sm active-toggle" type="button" title="Bật/Tắt âm thanh">Âm thanh:
-            BẬT</button>
-          <button id="btnResetSave" class="btn btn-sm" type="button" title="Đặt lại dữ liệu mặc định">Reset lưu</button>
-        </div>
+<div class="casino-frame">
+  <!-- MÀN HÌNH ĐĂNG NHẬP / CHỌN TÀI KHOẢN -->
+  <section id="startScreen" class="screen active">
+    <div class="login-stage">
+      <div class="crown-logo">
+        <div class="crown-badge">VIP CLUB • SÒNG BÀI TRỰC TUYẾN</div>
+        <h1>TÀI XỈU 11 TIN</h1>
       </div>
 
-      <div class="stage-wrap">
-        <canvas id="gameCanvas" width="540" height="320"></canvas>
-      </div>
-
-      <div class="status-box">
-        <div class="status-texts">
-          <div id="statusMain" class="status-main">CHỌN TÀI/XỈU &amp; MỆNH GIÁ -&gt; BẤM [XÁC NHẬN CƯỢC]</div>
-          <div id="statusSub" class="status-sub"></div>
-        </div>
-        <div id="countdownBadge" class="countdown-badge">Auto: 20s</div>
-      </div>
-
-      <div id="rejoinWrap" class="btn-rejoin-wrap">
-        <button id="btnRejoin" class="btn btn-rejoin" type="button">CHƠI LẠI (NHẬN LẠI 1000 XU)</button>
-      </div>
-
-      <div class="controls-grid">
-        <div class="row-2">
-          <button id="btnTai" class="btn btn-tai" type="button">TÀI (11-18)</button>
-          <button id="btnXiu" class="btn btn-xiu" type="button">XỈU (3-10)</button>
+      <div class="login-card">
+        <div class="auth-tabs" role="tablist">
+          <button id="tabLogin" class="auth-tab-btn active" type="button" role="tab" aria-selected="true">ĐĂNG NHẬP</button>
+          <button id="tabRegister" class="auth-tab-btn" type="button" role="tab" aria-selected="false">TẠO TÀI KHOẢN</button>
         </div>
 
-        <div class="row-4">
-          <button class="btn btn-mg" data-mg="50" type="button">50 XU</button>
-          <button class="btn btn-mg selected" data-mg="100" type="button">100 XU</button>
-          <button class="btn btn-mg" data-mg="200" type="button">200 XU</button>
-          <button class="btn btn-mg" data-mg="500" type="button">500 XU</button>
+        <h2 id="loginCardTitle" class="login-card-title">ĐĂNG NHẬP TÀI KHOẢN THIẾT BỊ</h2>
+
+        <div id="quickAccountsWrap" class="quick-accounts-wrap" style="display:none;">
+          <div class="quick-accounts-label">Tài khoản trên thiết bị này (chạm để chọn):</div>
+          <div id="quickAccountsList" class="quick-accounts-list"></div>
         </div>
 
-        <div class="row-action">
-          <button id="btnConfirm" class="btn btn-confirm" type="button">XÁC NHẬN CƯỢC</button>
-          <button id="btnAllIn" class="btn btn-allin" type="button">ALL IN</button>
+        <div class="field-stack">
+          <div class="field-group">
+            <label for="inputUsername">Tên tài khoản</label>
+            <input id="inputUsername" class="auth-input" type="text" maxlength="20" placeholder="Nhập tên người chơi..." autocomplete="username" />
+          </div>
+          <div class="field-group">
+            <label for="inputPin">Mã PIN bảo mật (4–6 số)</label>
+            <input id="inputPin" class="auth-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••" autocomplete="current-password" />
+          </div>
+          <div id="confirmPinGroup" class="field-group" style="display:none;">
+            <label for="inputPinConfirm">Nhập lại mã PIN</label>
+            <input id="inputPinConfirm" class="auth-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="••••" autocomplete="new-password" />
+          </div>
         </div>
 
-        <div class="row-2">
-          <button id="btnDeposit" class="btn btn-vault" type="button">GỬI KÉT SẮT</button>
-          <button id="btnWithdraw" class="btn btn-vault" type="button">RÚT KÉT SẮT</button>
+        <div id="authHint" class="auth-hint">Phải <strong>Tạo tài khoản</strong> trước mới có thể đăng nhập. Mỗi thiết bị lưu riêng tài khoản và số xu.</div>
+        <div id="authError" class="auth-error"></div>
+
+        <button id="btnStart" class="btn-play-gold" type="button">ĐĂNG NHẬP VÀO BÀN</button>
+      </div>
+
+      <div class="mini-rules">
+        <div class="mini-rule-item">
+          <strong>1. Chọn Cửa &amp; Chip</strong>
+          Chạm trực tiếp vào ô <b>TÀI</b> hoặc <b>XỈU</b> trên bàn, chọn phỉnh cược và bấm <b>XÁC NHẬN</b>.
+        </div>
+        <div class="mini-rule-item">
+          <strong>2. Luật Điểm Chuẩn</strong>
+          <b>XỈU:</b> 3 – 10 điểm &bull; <b>TÀI:</b> 11 – 18 điểm (không tính Bão riêng).
+        </div>
+        <div class="mini-rule-item">
+          <strong>3. Két Sắt An Toàn</strong>
+          Cất giữ xu thắng vào két sắt riêng của từng tài khoản, rút ra bất cứ lúc nào.
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="history-panel">
-        <div id="cauText" class="cau-line">CẦU: Đang tải...</div>
-        <div class="history-caption">Lịch sử (T: Tài 11-18, X: Xỉu 3-10 — viền vàng là phiên mới nhất):</div>
-        <div id="beadsRow" class="beads-row"></div>
+  <!-- MÀN HÌNH BÀN CHƠI CHÍNH -->
+  <section id="gameScreen" class="screen">
+    <header class="hud-header">
+      <div class="hud-brand">
+        <div class="brand-emblem">11T</div>
+        <div class="brand-name">TÀI XỈU 11 TIN</div>
       </div>
 
-      <div class="footer-hint">
-        <span id="spinCounter">Lần xóc: 0</span>
-        <span>Phím tắt: [T] Tài • [X] Xỉu • [F/Enter] Xác nhận • [A] All-in • [G/R] Két sắt • [W] Mở bát</span>
+      <div class="hud-wallets">
+        <div class="wallet-chip user-pill" id="playerBadge">TK: ---</div>
+        <div class="wallet-chip">Ví: <span class="val" id="xuVal">1000</span></div>
+        <div class="wallet-chip">Két: <span class="val" id="ketVal">0</span></div>
+        <div class="wallet-chip">Cược: <span class="val" id="cuocVal">100</span></div>
       </div>
-    </section>
-  </div>
 
-  <script>
-    (() => {
-      const STORAGE_KEY = "taixiu_11_tin_save_v1";
-      const MAX_HIST = 200;
-      const CHU_KY_AUTO_MS = 20000;
-      const INITIAL_XU = 1000;
-      const WIN_PROBABILITY = 0.45;
-      const PAYOUT_RATE = 0.98;
+      <div class="hud-tools">
+        <button id="btnSwitchAccount" class="tool-btn" type="button">Đổi TK</button>
+        <button id="btnSound" class="tool-btn sound-on" type="button">Âm: BẬT</button>
+        <button id="btnResetSave" class="tool-btn" type="button">Reset TK</button>
+      </div>
+    </header>
 
-      const canvas = document.getElementById("gameCanvas");
-      const ctx = canvas.getContext("2d");
+    <div class="table-felt">
+      <div class="marquee-bar">
+        <div class="marquee-texts">
+          <div id="statusMain" class="marquee-main">CHỌN CỬA TÀI HOẶC XỈU ĐỂ BẮT ĐẦU</div>
+          <div id="statusSub" class="marquee-sub"></div>
+        </div>
+        <div id="countdownBadge" class="timer-orb">20s</div>
+      </div>
 
-      const startScreen = document.getElementById("startScreen");
-      const gameScreen = document.getElementById("gameScreen");
-      const btnStart = document.getElementById("btnStart");
-      const btnSound = document.getElementById("btnSound");
-      const btnResetSave = document.getElementById("btnResetSave");
+      <div id="rejoinWrap" class="rejoin-banner">
+        <button id="btnRejoin" class="btn-play-gold" type="button">HẾT XU — BẤM NHẬN LẠI 1.000 XU CHƠI TIẾP</button>
+      </div>
 
-      const xuVal = document.getElementById("xuVal");
-      const ketVal = document.getElementById("ketVal");
-      const cuocVal = document.getElementById("cuocVal");
-      const statusMain = document.getElementById("statusMain");
-      const statusSub = document.getElementById("statusSub");
-      const countdownBadge = document.getElementById("countdownBadge");
-      const rejoinWrap = document.getElementById("rejoinWrap");
-      const btnRejoin = document.getElementById("btnRejoin");
+      <!-- BÀN CƯỢC 3 CỘT -->
+      <div class="arena-grid">
+        <button id="btnTai" class="bet-door door-tai" type="button">
+          <span class="door-tag">CỬA LỚN</span>
+          <span class="door-name">TÀI</span>
+          <span class="door-range">11 – 18 ĐIỂM</span>
+          <span id="taiStakeLabel" class="door-stake-badge">Chạm để chọn</span>
+        </button>
 
-      const btnTai = document.getElementById("btnTai");
-      const btnXiu = document.getElementById("btnXiu");
-      const mgButtons = Array.from(document.querySelectorAll(".btn-mg"));
-      const btnConfirm = document.getElementById("btnConfirm");
-      const btnAllIn = document.getElementById("btnAllIn");
-      const btnDeposit = document.getElementById("btnDeposit");
-      const btnWithdraw = document.getElementById("btnWithdraw");
+        <div class="bowl-pedestal">
+          <canvas id="gameCanvas" width="310" height="256"></canvas>
+        </div>
 
-      const cauText = document.getElementById("cauText");
-      const beadsRow = document.getElementById("beadsRow");
-      const spinCounter = document.getElementById("spinCounter");
+        <button id="btnXiu" class="bet-door door-xiu" type="button">
+          <span class="door-tag">CỬA NHỎ</span>
+          <span class="door-name">XỈU</span>
+          <span class="door-range">3 – 10 ĐIỂM</span>
+          <span id="xiuStakeLabel" class="door-stake-badge">Chạm để chọn</span>
+        </button>
+      </div>
 
-      // 1-based dice array d[1..3]
-      const d = [0, 2, 3, 5];
-      let showDice = [0, 2, 3, 5];
-      let ox = [0, 0, 0, 0];
-      let oy = [0, 0, 0, 0];
+      <!-- KHAY CHIP & NÚT HÀNH ĐỘNG -->
+      <div class="chip-deck">
+        <div class="chips-row">
+          <button class="casino-chip chip-50" data-mg="50" type="button">50<span>XU</span></button>
+          <button class="casino-chip chip-100 selected" data-mg="100" type="button">100<span>XU</span></button>
+          <button class="casino-chip chip-200" data-mg="200" type="button">200<span>XU</span></button>
+          <button class="casino-chip chip-500" data-mg="500" type="button">500<span>XU</span></button>
+          <button id="btnAllIn" class="casino-chip chip-allin" type="button">ALL IN<span>TẤT TAY</span></button>
+        </div>
 
-      let soLanXoc = 0;
-      let hist = [0]; // 1-based: 1 = TAI, 2 = XIU
-      let xu = INITIAL_XU;
-      let ketSat = 0;
-      let tienCuoc = 100;
-      let cuaChon = 0; // 0 = chưa chọn, 1 = TÀI, 2 = XỈU
-      let ketQuaSo = 0; // 1 = TÀI, 2 = XỈU
+        <div class="actions-row">
+          <button id="btnConfirm" class="action-btn btn-confirm-vip" type="button">XÁC NHẬN CƯỢC</button>
+          <button id="btnDeposit" class="action-btn btn-vault-vip" type="button">GỬI KÉT</button>
+          <button id="btnWithdraw" class="action-btn btn-vault-vip" type="button">RÚT KÉT</button>
+        </div>
+      </div>
+    </div>
 
-      let daXacNhanCuoc = false;
-      let cuaDaXacNhan = 0;
-      let tienDaXacNhan = 0;
+    <!-- BẢNG SOI CẦU -->
+    <footer class="roadmap-bar">
+      <div class="roadmap-header">
+        <div id="cauText" class="cau-pill">CẦU: Đang phân tích...</div>
+        <div class="roadmap-stats">
+          <span id="taiCountStat" class="stat-t">TÀI: 0</span>
+          <span id="xiuCountStat" class="stat-x">XỈU: 0</span>
+          <span id="spinCounter">Phiên: 0</span>
+        </div>
+      </div>
+      <div id="beadsRow" class="beads-track"></div>
+      <div class="hotkey-strip">
+        <span>Phím tắt: [T] Tài • [X] Xỉu • [A] All-in • [G] Gửi két • [R] Rút két • [F/Enter] Xác nhận • [W] Mở bát</span>
+        <span>Kéo bát trên đĩa để tự nặn kết quả</span>
+      </div>
+    </footer>
+  </section>
+</div>
 
-      let daBatDau = false;
-      let dangXoc = false;
-      let dangCheBat = false;
-      let daCongBo = false;
-      let soundEnabled = true;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-      let mocThoiGianCuoi = performance.now();
-      let giayConLaiTruoc = -1;
+(() => {
+  const appId = typeof __app_id !== "undefined" ? __app_id : "taixiu-11-tin-default";
+  const firebaseConfig = typeof __firebase_config !== "undefined"
+    ? (typeof __firebase_config === "string" ? JSON.parse(__firebase_config) : __firebase_config)
+    : null;
 
-      const DIA_X = 270;
-      const DIA_Y = 160;
-      const R_DIA = 92;
-      const DICE_SIZE = 38;
-      const TAM_DX = [0, 0, -28, 28];
-      const TAM_DY = [0, -26, 20, 20];
+  let db = null;
+  let auth = null;
+  let cloudUser = null;
+  let cloudReady = false;
+  let unsubscribeCloudAcc = null;
 
-      let batOffsetX = 0;
-      let batOffsetY = 0;
-      let dangKeoChuot = false;
-      let pointerIdActive = null;
-      let lastPX = 0;
-      let lastPY = 0;
+  const DEVICE_ID_KEY = "taixiu_11_tin_device_id_v1";
+  const ACCOUNTS_INDEX_PREFIX = "taixiu_11_tin_accounts_dev_";
+  const ACCOUNT_PREFIX = "taixiu_11_tin_acc_dev_";
+  const LAST_USER_PREFIX = "taixiu_11_tin_last_user_dev_";
+  const MAX_HIST = 200;
+  const CHU_KY_AUTO_MS = 20000;
+  const INITIAL_XU = 1000;
+  const WIN_PROBABILITY = 0.45;
+  const PAYOUT_RATE = 0.98;
 
-      let mainMessage = "CHỌN TÀI/XỈU & MỆNH GIÁ -> BẤM [XÁC NHẬN CƯỢC]";
-      let mainColor = "#ffd43b";
-      let subMessage = "";
-      let subColor = "#e2e8f0";
-      let cauMessage = "";
-      let cauColor = "#67e8f9";
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
 
-      // Web Audio sound effects
-      let audioCtx = null;
-      function playTone(freq, duration, type = "sine", gainVal = 0.06, delaySec = 0) {
-        if (!soundEnabled) return;
-        try {
-          if (!audioCtx) {
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContextClass) return;
-            audioCtx = new AudioContextClass();
-          }
-          if (audioCtx.state === "suspended") {
-            audioCtx.resume();
-          }
-          const now = audioCtx.currentTime + delaySec;
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, now);
-          gain.gain.setValueAtTime(gainVal, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(now);
-          osc.stop(now + duration);
-        } catch (_) { }
+  const startScreen = document.getElementById("startScreen");
+  const gameScreen = document.getElementById("gameScreen");
+  const tabLogin = document.getElementById("tabLogin");
+  const tabRegister = document.getElementById("tabRegister");
+  const loginCardTitle = document.getElementById("loginCardTitle");
+  const quickAccountsWrap = document.getElementById("quickAccountsWrap");
+  const quickAccountsList = document.getElementById("quickAccountsList");
+  const inputUsername = document.getElementById("inputUsername");
+  const inputPin = document.getElementById("inputPin");
+  const confirmPinGroup = document.getElementById("confirmPinGroup");
+  const inputPinConfirm = document.getElementById("inputPinConfirm");
+  const authHint = document.getElementById("authHint");
+  const authError = document.getElementById("authError");
+  const btnStart = document.getElementById("btnStart");
+  const playerBadge = document.getElementById("playerBadge");
+  const btnSwitchAccount = document.getElementById("btnSwitchAccount");
+  const btnSound = document.getElementById("btnSound");
+  const btnResetSave = document.getElementById("btnResetSave");
+
+  const xuVal = document.getElementById("xuVal");
+  const ketVal = document.getElementById("ketVal");
+  const cuocVal = document.getElementById("cuocVal");
+  const statusMain = document.getElementById("statusMain");
+  const statusSub = document.getElementById("statusSub");
+  const countdownBadge = document.getElementById("countdownBadge");
+  const rejoinWrap = document.getElementById("rejoinWrap");
+  const btnRejoin = document.getElementById("btnRejoin");
+
+  const btnTai = document.getElementById("btnTai");
+  const btnXiu = document.getElementById("btnXiu");
+  const taiStakeLabel = document.getElementById("taiStakeLabel");
+  const xiuStakeLabel = document.getElementById("xiuStakeLabel");
+  const mgButtons = Array.from(document.querySelectorAll(".casino-chip[data-mg]"));
+  const btnConfirm = document.getElementById("btnConfirm");
+  const btnAllIn = document.getElementById("btnAllIn");
+  const btnDeposit = document.getElementById("btnDeposit");
+  const btnWithdraw = document.getElementById("btnWithdraw");
+
+  const cauText = document.getElementById("cauText");
+  const taiCountStat = document.getElementById("taiCountStat");
+  const xiuCountStat = document.getElementById("xiuCountStat");
+  const beadsRow = document.getElementById("beadsRow");
+  const spinCounter = document.getElementById("spinCounter");
+
+  // 1-based dice array d[1..3]
+  const d = [0, 2, 3, 5];
+  let showDice = [0, 2, 3, 5];
+  let ox = [0, 0, 0, 0];
+  let oy = [0, 0, 0, 0];
+
+  let currentUser = null;
+  let authMode = "login"; // "login" | "register"
+  let soLanXoc = 0;
+  let hist = [0]; // 1-based: 1 = TAI, 2 = XIU
+  let xu = INITIAL_XU;
+  let ketSat = 0;
+  let tienCuoc = 100;
+  let cuaChon = 0; // 0 = chưa chọn, 1 = TÀI, 2 = XỈU
+  let ketQuaSo = 0;
+
+  let daXacNhanCuoc = false;
+  let cuaDaXacNhan = 0;
+  let tienDaXacNhan = 0;
+
+  let daBatDau = false;
+  let dangXoc = false;
+  let dangCheBat = false;
+  let daCongBo = false;
+  let soundEnabled = true;
+
+  let mocThoiGianCuoi = performance.now();
+  let giayConLaiTruoc = -1;
+
+  // Tọa độ đĩa & bát trên canvas 310x256
+  const DIA_X = 155;
+  const DIA_Y = 122;
+  const R_DIA = 82;
+  const DICE_SIZE = 34;
+  const TAM_DX = [0, 0, -24, 24];
+  const TAM_DY = [0, -22, 18, 18];
+
+  let batOffsetX = 0;
+  let batOffsetY = 0;
+  let dangKeoChuot = false;
+  let pointerIdActive = null;
+  let lastPX = 0;
+  let lastPY = 0;
+
+  let mainMessage = "CHỌN CỬA TÀI/XỈU & MỆNH GIÁ -> BẤM [XÁC NHẬN CƯỢC]";
+  let mainColor = "#ffe885";
+  let subMessage = "";
+  let subColor = "#cbd5e1";
+  let cauMessage = "";
+  let cauColor = "#67e8f9";
+
+  // Web Audio sound effects
+  let audioCtx = null;
+  function playTone(freq, duration, type = "sine", gainVal = 0.06, delaySec = 0) {
+    if (!soundEnabled) return;
+    try {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        audioCtx = new AudioContextClass();
       }
-
-      function playClickSound() {
-        playTone(540, 0.045, "triangle", 0.045);
+      if (audioCtx.state === "suspended") {
+        audioCtx.resume();
       }
+      const now = audioCtx.currentTime + delaySec;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+      gain.gain.setValueAtTime(gainVal, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + duration);
+    } catch (_) {}
+  }
 
-      function playShakeTick(step) {
-        playTone(210 + (step % 4) * 45, 0.035, "square", 0.03);
+  function playClickSound() {
+    playTone(540, 0.045, "triangle", 0.045);
+  }
+
+  function playShakeTick(step) {
+    playTone(210 + (step % 4) * 45, 0.035, "square", 0.03);
+  }
+
+  function playWinSound() {
+    playTone(587.33, 0.11, "triangle", 0.07, 0);
+    playTone(783.99, 0.14, "triangle", 0.07, 0.09);
+    playTone(1046.5, 0.22, "triangle", 0.08, 0.18);
+  }
+
+  function playLoseSound() {
+    playTone(311.13, 0.14, "sawtooth", 0.05, 0);
+    playTone(233.08, 0.22, "sawtooth", 0.05, 0.12);
+  }
+
+  function normalizeUsername(name) {
+    return String(name || "").trim().toLowerCase().replace(/\s+/g, " ");
+  }
+
+  function getDeviceId() {
+    try {
+      let devId = localStorage.getItem(DEVICE_ID_KEY);
+      if (!devId) {
+        devId = "dev_" + Math.random().toString(36).slice(2, 10) + "_" + Date.now().toString(36);
+        localStorage.setItem(DEVICE_ID_KEY, devId);
       }
+      return devId;
+    } catch (_) {
+      return "dev_fallback";
+    }
+  }
 
-      function playWinSound() {
-        playTone(587.33, 0.11, "triangle", 0.07, 0);
-        playTone(783.99, 0.14, "triangle", 0.07, 0.09);
-        playTone(1046.5, 0.22, "triangle", 0.08, 0.18);
+  function getAccountsList() {
+    try {
+      const raw = localStorage.getItem(ACCOUNTS_INDEX_PREFIX + getDeviceId());
+      if (!raw) return [];
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function saveAccountsList(list) {
+    try {
+      localStorage.setItem(ACCOUNTS_INDEX_PREFIX + getDeviceId(), JSON.stringify(list));
+    } catch (_) {}
+  }
+
+  function upsertAccountInList(normUser, displayName) {
+    const list = getAccountsList();
+    const idx = list.findIndex((a) => a.username === normUser);
+    if (idx >= 0) {
+      list[idx].displayName = displayName;
+    } else {
+      list.push({ username: normUser, displayName });
+    }
+    saveAccountsList(list);
+  }
+
+  function getAccountStorageKey(normUser) {
+    return `${ACCOUNT_PREFIX}${getDeviceId()}_${encodeURIComponent(normUser)}`;
+  }
+
+  function getCloudAccountDocRef(normUser) {
+    if (!db || !cloudUser || !normUser) return null;
+    return doc(db, "artifacts", appId, "users", cloudUser.uid, "accounts", encodeURIComponent(normUser));
+  }
+
+  async function syncCurrentAccountToCloud() {
+    if (!cloudReady || !currentUser) return;
+    try {
+      const ref = getCloudAccountDocRef(currentUser.username);
+      if (!ref) return;
+      await setDoc(ref, buildSavePayload(), { merge: true });
+    } catch (_) {}
+  }
+
+  async function initCloudAuth() {
+    if (!firebaseConfig || typeof firebaseConfig !== "object" || !firebaseConfig.apiKey) {
+      cloudReady = false;
+      return;
+    }
+    try {
+      const app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+        await signInWithCustomToken(auth, __initial_auth_token);
+      } else {
+        await signInAnonymously(auth);
       }
-
-      function playLoseSound() {
-        playTone(311.13, 0.14, "sawtooth", 0.05, 0);
-        playTone(233.08, 0.22, "sawtooth", 0.05, 0.12);
+      cloudUser = auth.currentUser;
+      cloudReady = Boolean(cloudUser);
+      if (cloudReady && currentUser) {
+        await syncCurrentAccountToCloud();
       }
+    } catch (_) {
+      cloudReady = false;
+    }
+  }
 
-      function khoiTaoLichSuMau() {
-        const mau = [0, 1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2];
-        hist = [0];
-        for (let i = 1; i <= 14; i++) {
-          hist.push(mau[i]);
+  function khoiTaoLichSuMau() {
+    const mau = [0, 1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 2, 2, 2];
+    hist = [0];
+    for (let i = 1; i <= 14; i++) {
+      hist.push(mau[i]);
+    }
+  }
+
+  function themVaoLichSu(kq) {
+    if (hist.length - 1 < MAX_HIST) {
+      hist.push(kq);
+    } else {
+      for (let i = 1; i < MAX_HIST; i++) {
+        hist[i] = hist[i + 1];
+      }
+      hist[MAX_HIST] = kq;
+    }
+  }
+
+  function capNhatNhanDienCau() {
+    const nHist = hist.length - 1;
+    if (nHist <= 0) {
+      cauMessage = "CẦU: Chưa có dữ liệu";
+      cauColor = "#94a3b8";
+      return;
+    }
+
+    const cuoi = hist[nHist];
+    let doDaiBet = 1;
+    for (let i = nHist - 1; i >= 1; i--) {
+      if (hist[i] === cuoi) doDaiBet++;
+      else break;
+    }
+    if (doDaiBet >= 3) {
+      cauMessage = `CẦU BỆT: ${cuoi === 1 ? "TÀI" : "XỈU"} (${doDaiBet} phiên liên tiếp)`;
+      cauColor = cuoi === 1 ? "#ff7875" : "#5ce1ff";
+      return;
+    }
+
+    if (nHist >= 4) {
+      const a = hist[nHist - 3];
+      const b = hist[nHist - 2];
+      const c = hist[nHist - 1];
+      const e = hist[nHist];
+      if (a === b && c === e && a !== c) {
+        let soCap = 2;
+        if (nHist >= 6 && hist[nHist - 5] === hist[nHist - 4] && hist[nHist - 4] !== a) {
+          soCap = 3;
         }
+        cauMessage = `CẦU 2-2: Đang phát triển (${soCap} cặp)`;
+        cauColor = "#ffe885";
+        return;
       }
+    }
 
-      function themVaoLichSu(kq) {
-        if (hist.length - 1 < MAX_HIST) {
-          hist.push(kq);
-        } else {
-          for (let i = 1; i < MAX_HIST; i++) {
-            hist[i] = hist[i + 1];
-          }
-          hist[MAX_HIST] = kq;
+    if (nHist >= 4) {
+      let hopLe11 = true;
+      let nhip = 1;
+      for (let i = nHist; i >= 2; i--) {
+        if (hist[i] === hist[i - 1]) {
+          if (i >= nHist - 2) hopLe11 = false;
+          break;
         }
+        if (i >= nHist - 2) nhip++;
+        else if (hist[i] !== hist[i + 2]) break;
+        else nhip++;
       }
-
-      function capNhatNhanDienCau() {
-        const nHist = hist.length - 1;
-        if (nHist <= 0) {
-          cauMessage = "CẦU: Chưa có dữ liệu";
-          cauColor = "#94a3b8";
-          return;
-        }
-
-        const cuoi = hist[nHist];
-        let doDaiBet = 1;
-        for (let i = nHist - 1; i >= 1; i--) {
-          if (hist[i] === cuoi) doDaiBet++;
-          else break;
-        }
-        if (doDaiBet >= 3) {
-          cauMessage = `CẦU BỆT: ${cuoi === 1 ? "TÀI" : "XỈU"} (${doDaiBet} phiên liên tiếp)`;
-          cauColor = cuoi === 1 ? "#ff7875" : "#67e8f9";
-          return;
-        }
-
-        if (nHist >= 4) {
-          const a = hist[nHist - 3];
-          const b = hist[nHist - 2];
-          const c = hist[nHist - 1];
-          const e = hist[nHist];
-          if (a === b && c === e && a !== c) {
-            let soCap = 2;
-            if (nHist >= 6 && hist[nHist - 5] === hist[nHist - 4] && hist[nHist - 4] !== a) {
-              soCap = 3;
-            }
-            cauMessage = `CẦU 2-2: Đang phát triển (${soCap} cặp)`;
-            cauColor = "#ffd43b";
-            return;
-          }
-        }
-
-        if (nHist >= 4) {
-          let hopLe11 = true;
-          let nhip = 1;
-          for (let i = nHist; i >= 2; i--) {
-            if (hist[i] === hist[i - 1]) {
-              if (i >= nHist - 2) hopLe11 = false;
-              break;
-            }
-            if (i >= nHist - 2) nhip++;
-            else if (hist[i] !== hist[i + 2]) break;
-            else nhip++;
-          }
-          if (hopLe11 && nhip >= 4) {
-            cauMessage = `CẦU 1-1: Xen kẽ ${nhip} phiên gần nhất`;
-            cauColor = "#86efac";
-            return;
-          }
-        }
-
-        cauMessage = "CẦU: Biến động / Chưa rõ dạng cầu";
-        cauColor = "#f8fafc";
+      if (hopLe11 && nhip >= 4) {
+        cauMessage = `CẦU 1-1: Xen kẽ ${nhip} phiên gần nhất`;
+        cauColor = "#6ee7b7";
+        return;
       }
+    }
 
-      function luuDuLieuNguoiDung() {
-        try {
-          const nHist = Math.min(MAX_HIST, Math.max(0, hist.length - 1));
-          const cleanHist = [];
-          for (let i = 1; i <= nHist; i++) {
-            if (hist[i] === 1 || hist[i] === 2) cleanHist.push(hist[i]);
-          }
-          const payload = {
-            xu: Math.max(0, Math.floor(xu)),
-            ketSat: Math.max(0, Math.floor(ketSat)),
-            tienCuoc: Math.max(1, Math.floor(tienCuoc)),
-            soLanXoc: Math.max(0, Math.floor(soLanXoc)),
-            hist: cleanHist
-          };
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-          return true;
-        } catch (_) {
-          return false;
-        }
+    cauMessage = "CẦU: Biến động / Chưa rõ dạng cầu";
+    cauColor = "#f8fafc";
+  }
+
+  function buildSavePayload() {
+    const nHist = Math.min(MAX_HIST, Math.max(0, hist.length - 1));
+    const cleanHist = [];
+    for (let i = 1; i <= nHist; i++) {
+      if (hist[i] === 1 || hist[i] === 2) cleanHist.push(hist[i]);
+    }
+    return {
+      deviceId: getDeviceId(),
+      username: currentUser ? currentUser.username : "",
+      displayName: currentUser ? currentUser.displayName : "",
+      pin: currentUser ? currentUser.pin : "",
+      xu: Math.max(0, Math.floor(xu)),
+      ketSat: Math.max(0, Math.floor(ketSat)),
+      tienCuoc: Math.max(1, Math.floor(tienCuoc)),
+      soLanXoc: Math.max(0, Math.floor(soLanXoc)),
+      hist: cleanHist,
+      updatedAt: Date.now()
+    };
+  }
+
+  function applyLoadedAccountData(data, fallbackUser, fallbackPin) {
+    xu = typeof data.xu === "number" && data.xu >= 0 ? Math.floor(data.xu) : INITIAL_XU;
+    ketSat = typeof data.ketSat === "number" && data.ketSat >= 0 ? Math.floor(data.ketSat) : 0;
+    tienCuoc = typeof data.tienCuoc === "number" && data.tienCuoc > 0 ? Math.floor(data.tienCuoc) : 100;
+    soLanXoc = typeof data.soLanXoc === "number" && data.soLanXoc >= 0 ? Math.floor(data.soLanXoc) : 0;
+
+    const loadedHist = [0];
+    if (Array.isArray(data.hist)) {
+      for (let i = 0; i < Math.min(data.hist.length, MAX_HIST); i++) {
+        const val = data.hist[i];
+        if (val === 1 || val === 2) loadedHist.push(val);
       }
+    }
+    hist = loadedHist.length > 1 ? loadedHist : [0];
 
-      function taiDuLieuNguoiDung() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return false;
-          const data = JSON.parse(raw);
-          if (!data || typeof data !== "object") return false;
-          if (typeof data.xu !== "number" || typeof data.ketSat !== "number" || typeof data.tienCuoc !== "number") {
-            return false;
-          }
-          if (data.xu < 0 || data.ketSat < 0 || data.tienCuoc <= 0) return false;
+    currentUser = {
+      username: fallbackUser,
+      displayName: data.displayName || fallbackUser,
+      pin: data.pin || fallbackPin
+    };
 
-          const loadedHist = [0];
-          if (Array.isArray(data.hist)) {
-            for (let i = 0; i < Math.min(data.hist.length, MAX_HIST); i++) {
-              const val = data.hist[i];
-              if (val === 1 || val === 2) loadedHist.push(val);
-            }
-          }
+    if (xu > 0 && tienCuoc > xu) {
+      tienCuoc = xu;
+    }
+  }
 
-          xu = Math.floor(data.xu);
-          ketSat = Math.floor(data.ketSat);
-          tienCuoc = Math.floor(data.tienCuoc);
-          soLanXoc = typeof data.soLanXoc === "number" && data.soLanXoc >= 0 ? Math.floor(data.soLanXoc) : 0;
-          hist = loadedHist;
+  function luuDuLieuNguoiDung() {
+    if (!currentUser) return false;
+    try {
+      const payload = buildSavePayload();
+      localStorage.setItem(getAccountStorageKey(currentUser.username), JSON.stringify(payload));
+      localStorage.setItem(LAST_USER_PREFIX + getDeviceId(), currentUser.username);
+      upsertAccountInList(currentUser.username, currentUser.displayName);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 
-          if (xu > 0 && tienCuoc > xu) {
-            tienCuoc = xu;
-          }
-          return true;
-        } catch (_) {
-          return false;
-        }
-      }
+  function taiDuLieuNguoiDung(normUser) {
+    try {
+      const raw = localStorage.getItem(getAccountStorageKey(normUser));
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== "object") return null;
+      return data;
+    } catch (_) {
+      return null;
+    }
+  }
 
-      function resetDuLieuVeMacDinh() {
+  function renderQuickAccounts() {
+    if (!quickAccountsWrap || !quickAccountsList) return;
+    const list = getAccountsList();
+    quickAccountsList.innerHTML = "";
+    if (!list.length) {
+      quickAccountsWrap.style.display = "none";
+      return;
+    }
+    quickAccountsWrap.style.display = "block";
+    list.forEach((acc) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "acc-chip";
+      chip.textContent = acc.displayName;
+      chip.addEventListener("click", () => {
         playClickSound();
-        try {
-          localStorage.removeItem(STORAGE_KEY);
-        } catch (_) { }
-        xu = INITIAL_XU;
-        ketSat = 0;
-        tienCuoc = 100;
-        cuaChon = 0;
-        ketQuaSo = 0;
-        soLanXoc = 0;
-        daXacNhanCuoc = false;
-        cuaDaXacNhan = 0;
-        tienDaXacNhan = 0;
-        dangCheBat = false;
-        daCongBo = false;
-        dangKeoChuot = false;
-        batOffsetX = 0;
-        batOffsetY = 0;
-        d[1] = 2; d[2] = 3; d[3] = 5;
-        showDice = [0, 2, 3, 5];
+        setAuthMode("login");
+        inputUsername.value = acc.displayName;
+        inputPin.value = "";
+        authError.textContent = "";
+        inputPin.focus();
+      });
+      quickAccountsList.appendChild(chip);
+    });
+  }
+
+  function setAuthMode(mode) {
+    authMode = mode === "register" ? "register" : "login";
+    const isReg = authMode === "register";
+    if (tabLogin) {
+      tabLogin.classList.toggle("active", !isReg);
+      tabLogin.setAttribute("aria-selected", String(!isReg));
+    }
+    if (tabRegister) {
+      tabRegister.classList.toggle("active", isReg);
+      tabRegister.setAttribute("aria-selected", String(isReg));
+    }
+    if (loginCardTitle) {
+      loginCardTitle.textContent = isReg
+        ? "TẠO TÀI KHOẢN MỚI CHO THIẾT BỊ"
+        : "ĐĂNG NHẬP TÀI KHOẢN THIẾT BỊ";
+    }
+    if (confirmPinGroup) {
+      confirmPinGroup.style.display = isReg ? "block" : "none";
+    }
+    if (authHint) {
+      authHint.innerHTML = isReg
+        ? "Tài khoản mới nhận ngay <strong>1.000 Xu</strong> và lưu riêng trên thiết bị này. Tên không được trùng với tài khoản đã có."
+        : "Phải <strong>Tạo tài khoản</strong> trước mới có thể đăng nhập. Mỗi thiết bị lưu riêng tài khoản và số xu.";
+    }
+    if (btnStart) {
+      btnStart.textContent = isReg ? "TẠO TÀI KHOẢN & VÀO BÀN" : "ĐĂNG NHẬP VÀO BÀN";
+    }
+    if (authError) authError.textContent = "";
+  }
+
+  function khoiPhucTrangThaiBanDauTrongBan() {
+    cuaChon = 0;
+    ketQuaSo = 0;
+    daXacNhanCuoc = false;
+    cuaDaXacNhan = 0;
+    tienDaXacNhan = 0;
+    dangXoc = false;
+    dangCheBat = false;
+    daCongBo = false;
+    dangKeoChuot = false;
+    batOffsetX = 0;
+    batOffsetY = 0;
+    ox = [0, 0, 0, 0];
+    oy = [0, 0, 0, 0];
+    showDice = [0, d[1], d[2], d[3]];
+    mocThoiGianCuoi = performance.now();
+    giayConLaiTruoc = -1;
+  }
+
+  function dangNhapHoacTaoTaiKhoan() {
+    const rawName = (inputUsername ? inputUsername.value : "").trim();
+    const pin = (inputPin ? inputPin.value : "").trim();
+    const pinConfirm = (inputPinConfirm ? inputPinConfirm.value : "").trim();
+
+    if (!rawName) {
+      if (authError) authError.textContent = "Vui lòng nhập tên tài khoản!";
+      playLoseSound();
+      if (inputUsername) inputUsername.focus();
+      return;
+    }
+    if (!/^\d{4,6}$/.test(pin)) {
+      if (authError) authError.textContent = "Mã PIN phải gồm 4 đến 6 chữ số!";
+      playLoseSound();
+      if (inputPin) inputPin.focus();
+      return;
+    }
+
+    const normUser = normalizeUsername(rawName);
+    const existing = taiDuLieuNguoiDung(normUser);
+
+    if (authMode === "login") {
+      if (!existing) {
+        if (authError) {
+          authError.textContent = "Tài khoản chưa tồn tại! Hãy chuyển sang tab [TẠO TÀI KHOẢN] trước.";
+        }
+        playLoseSound();
+        return;
+      }
+      if (existing.pin !== pin) {
+        if (authError) authError.textContent = "Mã PIN không chính xác!";
+        playLoseSound();
+        if (inputPin) inputPin.focus();
+        return;
+      }
+
+      applyLoadedAccountData(existing, normUser, pin);
+      currentUser.displayName = existing.displayName || rawName;
+      upsertAccountInList(normUser, currentUser.displayName);
+      khoiPhucTrangThaiBanDauTrongBan();
+      if (hist.length <= 1) khoiTaoLichSuMau();
+      capNhatNhanDienCau();
+      luuDuLieuNguoiDung();
+      renderQuickAccounts();
+
+      mainMessage = `CHÀO MỪNG ${currentUser.displayName.toUpperCase()} VÀO BÀN!`;
+      mainColor = "#ffe885";
+      subMessage = `Ví: ${xu.toLocaleString("vi-VN")} xu • Két sắt: ${ketSat.toLocaleString("vi-VN")} xu`;
+      subColor = "#cbd5e1";
+    } else {
+      if (pin !== pinConfirm) {
+        if (authError) authError.textContent = "Mã PIN nhập lại không khớp!";
+        playLoseSound();
+        if (inputPinConfirm) inputPinConfirm.focus();
+        return;
+      }
+      const nameTaken = getAccountsList().some(
+        (a) => a.username === normUser || normalizeUsername(a.displayName) === normUser
+      );
+      if (existing || nameTaken) {
+        if (authError) {
+          authError.textContent = "Tên tài khoản này đã tồn tại, không được đặt trùng! Hãy chọn tên khác hoặc bấm [ĐĂNG NHẬP].";
+        }
+        playLoseSound();
+        if (inputUsername) inputUsername.focus();
+        return;
+      }
+
+      currentUser = {
+        username: normUser,
+        displayName: rawName,
+        pin
+      };
+      xu = INITIAL_XU;
+      ketSat = 0;
+      tienCuoc = 100;
+      soLanXoc = 0;
+      khoiTaoLichSuMau();
+      khoiPhucTrangThaiBanDauTrongBan();
+      capNhatNhanDienCau();
+
+      upsertAccountInList(normUser, currentUser.displayName);
+      luuDuLieuNguoiDung();
+      renderQuickAccounts();
+
+      mainMessage = `TẠO TÀI KHOẢN [${currentUser.displayName}] THÀNH CÔNG! (+1.000 XU)`;
+      mainColor = "#6ee7b7";
+      subMessage = "Chạm TÀI hoặc XỈU, chọn phỉnh cược rồi bấm [XÁC NHẬN CƯỢC].";
+      subColor = "#cbd5e1";
+    }
+
+    daBatDau = true;
+    if (authError) authError.textContent = "";
+    startScreen.classList.remove("active");
+    gameScreen.classList.add("active");
+    playClickSound();
+    renderAll();
+  }
+
+  function doiTaiKhoan() {
+    if (dangXoc) return;
+    playClickSound();
+    luuDuLieuNguoiDung();
+    if (typeof unsubscribeCloudAcc === "function") {
+      unsubscribeCloudAcc();
+      unsubscribeCloudAcc = null;
+    }
+    daBatDau = false;
+    khoiPhucTrangThaiBanDauTrongBan();
+    gameScreen.classList.remove("active");
+    startScreen.classList.add("active");
+    inputPin.value = "";
+    inputPinConfirm.value = "";
+    authError.textContent = "";
+    renderQuickAccounts();
+    setAuthMode("login");
+    renderAll();
+  }
+
+  function resetDuLieuVeMacDinh() {
+    if (!currentUser) return;
+    playClickSound();
+    xu = INITIAL_XU;
+    ketSat = 0;
+    tienCuoc = 100;
+    cuaChon = 0;
+    ketQuaSo = 0;
+    soLanXoc = 0;
+    daXacNhanCuoc = false;
+    cuaDaXacNhan = 0;
+    tienDaXacNhan = 0;
+    dangCheBat = false;
+    daCongBo = false;
+    dangKeoChuot = false;
+    batOffsetX = 0;
+    batOffsetY = 0;
+    d[1] = 2; d[2] = 3; d[3] = 5;
+    showDice = [0, 2, 3, 5];
+    ox = [0, 0, 0, 0];
+    oy = [0, 0, 0, 0];
+    khoiTaoLichSuMau();
+    capNhatNhanDienCau();
+    mocThoiGianCuoi = performance.now();
+    giayConLaiTruoc = -1;
+    luuDuLieuNguoiDung();
+    mainMessage = `ĐÃ ĐẶT LẠI TÀI KHOẢN [${currentUser.displayName}] (1.000 XU)`;
+    mainColor = "#6ee7b7";
+    subMessage = "";
+    renderAll();
+  }
+
+  function choiLaiKhiHetTien() {
+    if (xu > 0 || ketSat > 0 || dangXoc || dangCheBat) return;
+    playClickSound();
+    xu = INITIAL_XU;
+    tienCuoc = 100;
+    cuaChon = 0;
+    ketQuaSo = 0;
+    daXacNhanCuoc = false;
+    cuaDaXacNhan = 0;
+    tienDaXacNhan = 0;
+    daCongBo = false;
+    batOffsetX = 0;
+    batOffsetY = 0;
+    dangKeoChuot = false;
+    mainMessage = "ĐÃ NHẬN LẠI 1.000 XU — CHÚC BẠN MAY MẮN!";
+    mainColor = "#6ee7b7";
+    subMessage = "Chạm TÀI hoặc XỈU, chọn phỉnh rồi bấm [XÁC NHẬN CƯỢC].";
+    subColor = "#cbd5e1";
+    mocThoiGianCuoi = performance.now();
+    giayConLaiTruoc = -1;
+    luuDuLieuNguoiDung();
+    renderAll();
+  }
+
+  function layGiayConLai() {
+    if (!daBatDau || dangCheBat || dangXoc) return -1;
+    const daTroi = performance.now() - mocThoiGianCuoi;
+    if (daTroi >= CHU_KY_AUTO_MS) return 0;
+    return Math.ceil((CHU_KY_AUTO_MS - daTroi) / 1000);
+  }
+
+  function sinhXucXacTheoTiLe() {
+    const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
+    if (cuaXet === 0) {
+      for (let i = 1; i <= 3; i++) {
+        d[i] = Math.floor(Math.random() * 6) + 1;
+      }
+      return;
+    }
+
+    const nguoiChoiThang = Math.random() < WIN_PROBABILITY;
+    const mucTieu = nguoiChoiThang ? cuaXet : (cuaXet === 1 ? 2 : 1);
+
+    while (true) {
+      d[1] = Math.floor(Math.random() * 6) + 1;
+      d[2] = Math.floor(Math.random() * 6) + 1;
+      d[3] = Math.floor(Math.random() * 6) + 1;
+      const sum = d[1] + d[2] + d[3];
+      if (mucTieu === 1 && sum >= 11) break;
+      if (mucTieu === 2 && sum <= 10) break;
+    }
+  }
+
+  function chuanBiKetQuaSauMoBat() {
+    const tong = d[1] + d[2] + d[3];
+    if (tong >= 11) {
+      ketQuaSo = 1;
+      mainMessage = `KẾT QUẢ: TÀI — ${tong} ĐIỂM (${d[1]}-${d[2]}-${d[3]})`;
+      mainColor = "#ff6b6b";
+    } else {
+      ketQuaSo = 2;
+      mainMessage = `KẾT QUẢ: XỈU — ${tong} ĐIỂM (${d[1]}-${d[2]}-${d[3]})`;
+      mainColor = "#5ce1ff";
+    }
+    subMessage = "";
+  }
+
+  function apDungKetQuaVaTinhXu() {
+    const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
+    const cuocXet = daXacNhanCuoc ? tienDaXacNhan : tienCuoc;
+    const muc = Math.min(xu, cuocXet);
+
+    if (cuaXet === 0) {
+      subMessage = "Phiên này bạn chưa đặt cược.";
+      subColor = "#94a3b8";
+    } else if (cuaXet === ketQuaSo) {
+      let tienLai = Math.floor(muc * PAYOUT_RATE);
+      if (tienLai < 1 && muc > 0) tienLai = 1;
+      xu += tienLai;
+      subMessage = `THẮNG LỚN! Nhận thưởng +${tienLai.toLocaleString("vi-VN")} xu`;
+      subColor = "#6ee7b7";
+      playWinSound();
+    } else {
+      xu = Math.max(0, xu - muc);
+      subMessage = `Chưa may mắn! Mất cược -${muc.toLocaleString("vi-VN")} xu`;
+      subColor = "#ff6b6b";
+      playLoseSound();
+    }
+
+    if (xu > 0 && tienCuoc > xu) {
+      tienCuoc = xu;
+    }
+  }
+
+  function chonCua(cua) {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    cuaChon = cua;
+    daXacNhanCuoc = false;
+    mainMessage = `ĐÃ CHỌN CỬA ${cua === 1 ? "TÀI" : "XỈU"} • MỨC ${tienCuoc.toLocaleString("vi-VN")} XU`;
+    mainColor = "#6ee7b7";
+    subMessage = "Bấm [XÁC NHẬN CƯỢC] để chốt vé phiên này.";
+    subColor = "#cbd5e1";
+    renderAll();
+  }
+
+  function chonMenhGia(val) {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    tienCuoc = val;
+    daXacNhanCuoc = false;
+    mainMessage = `CHỌN PHỈNH ${tienCuoc.toLocaleString("vi-VN")} XU${cuaChon ? ` • CỬA ${cuaChon === 1 ? "TÀI" : "XỈU"}` : ""}`;
+    mainColor = "#ffe885";
+    subMessage = cuaChon ? "Bấm [XÁC NHẬN CƯỢC] để chốt vé." : "Hãy chọn cửa TÀI hoặc XỈU.";
+    subColor = "#cbd5e1";
+    renderAll();
+  }
+
+  function bamAllIn() {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    if (xu <= 0) {
+      mainMessage = ketSat > 0
+        ? "HẾT XU TRONG VÍ! BẤM [RÚT KÉT] ĐỂ LẤY TIỀN"
+        : "ĐÃ HẾT XU! BẤM [NHẬN LẠI 1.000 XU] ĐỂ CHƠI TIẾP";
+      mainColor = "#ff6b6b";
+      renderAll();
+      return;
+    }
+    tienCuoc = xu;
+    daXacNhanCuoc = false;
+    mainMessage = `TẤT TAY ALL IN: ${tienCuoc.toLocaleString("vi-VN")} XU!`;
+    mainColor = "#ff6b6b";
+    subMessage = "Chọn cửa & bấm [XÁC NHẬN CƯỢC] để vào tiền.";
+    subColor = "#ffe885";
+    renderAll();
+  }
+
+  function xacNhanCuocHienTai() {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    if (xu <= 0) {
+      mainMessage = ketSat > 0
+        ? "HẾT XU TRONG VÍ! BẤM [RÚT KÉT] ĐỂ LẤY TIỀN"
+        : "ĐÃ HẾT XU! BẤM [NHẬN LẠI 1.000 XU] ĐỂ CHƠI TIẾP";
+      mainColor = "#ff6b6b";
+      renderAll();
+      return;
+    }
+    if (cuaChon === 0) {
+      mainMessage = "HÃY CHỌN CỬA [TÀI] HOẶC [XỈU] TRƯỚC KHI XÁC NHẬN!";
+      mainColor = "#ff6b6b";
+      renderAll();
+      return;
+    }
+
+    const mucThucTe = Math.min(xu, tienCuoc);
+    daXacNhanCuoc = true;
+    cuaDaXacNhan = cuaChon;
+    tienDaXacNhan = mucThucTe;
+    mainMessage = `ĐÃ CHỐT VÉ: ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} — ${tienDaXacNhan.toLocaleString("vi-VN")} XU`;
+    mainColor = "#6ee7b7";
+    subMessage = "Chờ hết đếm ngược để hệ thống xóc bát...";
+    subColor = "#cbd5e1";
+    renderAll();
+  }
+
+  function guiVaoKet() {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    if (xu <= 0) {
+      mainMessage = "KHÔNG CÒN XU TRONG VÍ ĐỂ GỬI KÉT!";
+      mainColor = "#ff6b6b";
+    } else {
+      const soGui = Math.min(xu, tienCuoc);
+      xu -= soGui;
+      ketSat += soGui;
+      daXacNhanCuoc = false;
+      if (xu > 0 && tienCuoc > xu) tienCuoc = xu;
+      luuDuLieuNguoiDung();
+      mainMessage = `ĐÃ CẤT +${soGui.toLocaleString("vi-VN")} XU VÀO KÉT SẮT`;
+      mainColor = "#5ce1ff";
+      subMessage = `Tổng két hiện tại: ${ketSat.toLocaleString("vi-VN")} xu`;
+    }
+    renderAll();
+  }
+
+  function rutTuKet() {
+    if (dangCheBat || dangXoc) return;
+    playClickSound();
+    if (ketSat <= 0) {
+      mainMessage = "KÉT SẮT ĐANG TRỐNG!";
+      mainColor = "#ff6b6b";
+    } else {
+      const soRut = Math.min(ketSat, tienCuoc);
+      ketSat -= soRut;
+      xu += soRut;
+      daXacNhanCuoc = false;
+      luuDuLieuNguoiDung();
+      mainMessage = `ĐÃ RÚT +${soRut.toLocaleString("vi-VN")} XU VỀ VÍ`;
+      mainColor = "#6ee7b7";
+      subMessage = `Còn trong két: ${ketSat.toLocaleString("vi-VN")} xu`;
+    }
+    renderAll();
+  }
+
+  function kiemTraMoHetBat() {
+    if (!dangCheBat || daCongBo) return;
+    const kc = Math.hypot(batOffsetX, batOffsetY);
+    if (kc >= 95) {
+      dangCheBat = false;
+      dangKeoChuot = false;
+      daCongBo = true;
+      batOffsetX = 130;
+      batOffsetY = -20;
+
+      chuanBiKetQuaSauMoBat();
+      apDungKetQuaVaTinhXu();
+      themVaoLichSu(ketQuaSo);
+      capNhatNhanDienCau();
+      luuDuLieuNguoiDung();
+      daXacNhanCuoc = false;
+
+      mocThoiGianCuoi = performance.now();
+      giayConLaiTruoc = -1;
+      renderAll();
+    }
+  }
+
+  function moBatBangPhimW() {
+    if (!dangCheBat || daCongBo || dangXoc) return;
+    batOffsetY -= 32;
+    mainMessage = "ĐANG NẶN BÁT...";
+    mainColor = "#5ce1ff";
+    kiemTraMoHetBat();
+    renderAll();
+  }
+
+  function chayHoatAnhXoc() {
+    if (dangXoc) return;
+    dangXoc = true;
+    dangCheBat = false;
+    daCongBo = false;
+    dangKeoChuot = false;
+    batOffsetX = 0;
+    batOffsetY = 0;
+    subMessage = "";
+
+    if (!daXacNhanCuoc && cuaChon !== 0 && xu > 0) {
+      daXacNhanCuoc = true;
+      cuaDaXacNhan = cuaChon;
+      tienDaXacNhan = Math.min(xu, tienCuoc);
+    }
+
+    mainMessage = "ĐANG XÓC XÚC XẮC...";
+    mainColor = "#5ce1ff";
+    renderAll();
+
+    const totalSteps = 22;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const huong = step % 2 === 0 ? 1 : -1;
+      for (let i = 1; i <= 3; i++) {
+        const pha = (step + i) % 2 === 0 ? 1 : -1;
+        ox[i] = huong * (7 + i * 2);
+        oy[i] = pha * 7;
+        showDice[i] = Math.floor(Math.random() * 6) + 1;
+      }
+      playShakeTick(step);
+      drawCanvas();
+
+      if (step >= totalSteps) {
+        clearInterval(timer);
+        sinhXucXacTheoTiLe();
         ox = [0, 0, 0, 0];
         oy = [0, 0, 0, 0];
-        khoiTaoLichSuMau();
-        capNhatNhanDienCau();
-        mocThoiGianCuoi = performance.now();
-        giayConLaiTruoc = -1;
-        mainMessage = "ĐÃ ĐẶT LẠI DỮ LIỆU MẶC ĐỊNH (1000 XU)";
-        mainColor = "#86efac";
-        subMessage = "";
-        renderAll();
-      }
-
-      function choiLaiKhiHetTien() {
-        if (xu > 0 || ketSat > 0 || dangXoc || dangCheBat) return;
-        playClickSound();
-        xu = INITIAL_XU;
-        tienCuoc = 100;
-        cuaChon = 0;
-        ketQuaSo = 0;
-        daXacNhanCuoc = false;
-        cuaDaXacNhan = 0;
-        tienDaXacNhan = 0;
-        daCongBo = false;
+        showDice = [0, d[1], d[2], d[3]];
+        soLanXoc++;
+        dangXoc = false;
+        dangCheBat = true;
         batOffsetX = 0;
         batOffsetY = 0;
-        dangKeoChuot = false;
-        mainMessage = "CHÀO MỪNG QUAY LẠI! ĐÃ NHẬN 1000 XU";
-        mainColor = "#86efac";
-        subMessage = "Chọn TÀI/XỈU & mệnh giá để tiếp tục.";
-        subColor = "#e2e8f0";
-        mocThoiGianCuoi = performance.now();
-        giayConLaiTruoc = -1;
-        luuDuLieuNguoiDung();
-        renderAll();
-      }
 
-      function layGiayConLai() {
-        if (!daBatDau || dangCheBat || dangXoc) return -1;
-        const daTroi = performance.now() - mocThoiGianCuoi;
-        if (daTroi >= CHU_KY_AUTO_MS) return 0;
-        return Math.ceil((CHU_KY_AUTO_MS - daTroi) / 1000);
-      }
-
-      function sinhXucXacTheoTiLe() {
-        const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
-        if (cuaXet === 0) {
-          for (let i = 1; i <= 3; i++) {
-            d[i] = Math.floor(Math.random() * 6) + 1;
-          }
-          return;
-        }
-
-        const nguoiChoiThang = Math.random() < WIN_PROBABILITY;
-        const mucTieu = nguoiChoiThang ? cuaXet : (cuaXet === 1 ? 2 : 1);
-
-        while (true) {
-          d[1] = Math.floor(Math.random() * 6) + 1;
-          d[2] = Math.floor(Math.random() * 6) + 1;
-          d[3] = Math.floor(Math.random() * 6) + 1;
-          const sum = d[1] + d[2] + d[3];
-          if (mucTieu === 1 && sum >= 11) break;
-          if (mucTieu === 2 && sum <= 10) break;
-        }
-      }
-
-      function chuanBiKetQuaSauMoBat() {
-        const tong = d[1] + d[2] + d[3];
-        if (tong >= 11) {
-          ketQuaSo = 1;
-          mainMessage = `TÀI - Tổng ${tong} điểm!`;
-          mainColor = "#ff7875";
+        if (daXacNhanCuoc && cuaDaXacNhan !== 0) {
+          mainMessage = `ĐÃ CƯỢC ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} (${tienDaXacNhan.toLocaleString("vi-VN")} XU) — KÉO BÁT ĐỂ MỞ!`;
         } else {
-          ketQuaSo = 2;
-          mainMessage = `XỈU - Tổng ${tong} điểm!`;
-          mainColor = "#67e8f9";
+          mainMessage = "ĐÃ ÚP BÁT — KÉO BÁT RA ĐỂ XEM KẾT QUẢ!";
         }
-        subMessage = "";
-      }
-
-      function apDungKetQuaVaTinhXu() {
-        const cuaXet = daXacNhanCuoc ? cuaDaXacNhan : cuaChon;
-        const cuocXet = daXacNhanCuoc ? tienDaXacNhan : tienCuoc;
-        const muc = Math.min(xu, cuocXet);
-
-        if (cuaXet === 0) {
-          subMessage = "Chưa đặt cửa nên không tính xu.";
-          subColor = "#94a3b8";
-        } else if (cuaXet === ketQuaSo) {
-          let tienLai = Math.floor(muc * PAYOUT_RATE);
-          if (tienLai < 1 && muc > 0) tienLai = 1;
-          xu += tienLai;
-          subMessage = `CHUẨN XÁC! Bạn thắng +${tienLai} xu!`;
-          subColor = "#86efac";
-          playWinSound();
-        } else {
-          xu = Math.max(0, xu - muc);
-          subMessage = `Hơi tiếc! Bạn thua -${muc} xu.`;
-          subColor = "#ff7875";
-          playLoseSound();
-        }
-
-        if (xu > 0 && tienCuoc > xu) {
-          tienCuoc = xu;
-        }
-      }
-
-      function chonCua(cua) {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        cuaChon = cua;
-        daXacNhanCuoc = false;
-        mainMessage = `CHỌN: ${cua === 1 ? "TÀI" : "XỈU"} | MỨC: ${tienCuoc} XU -> BẤM [XÁC NHẬN CƯỢC]`;
-        mainColor = "#86efac";
-        subMessage = "";
-        renderAll();
-      }
-
-      function chonMenhGia(val) {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        tienCuoc = val;
-        daXacNhanCuoc = false;
-        mainMessage = `CHỌN: ${cuaChon === 1 ? "TÀI" : (cuaChon === 2 ? "XỈU" : "CHƯA CHỌN")} | MỨC: ${tienCuoc} XU -> BẤM [XÁC NHẬN CƯỢC]`;
-        mainColor = "#86efac";
-        subMessage = "";
-        renderAll();
-      }
-
-      function bamAllIn() {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        if (xu <= 0) {
-          mainMessage = ketSat > 0
-            ? "HẾT XU! BẤM [RÚT KÉT SẮT] ĐỂ LẤY TIỀN"
-            : "ĐÃ HẾT XU! BẤM [CHƠI LẠI] ĐỂ NHẬN LẠI 1000 XU";
-          mainColor = "#ff7875";
-          renderAll();
-          return;
-        }
-        tienCuoc = xu;
-        daXacNhanCuoc = false;
-        mainMessage = `ALL IN: ${tienCuoc} XU! CHỌN CỬA & BẤM [XÁC NHẬN CƯỢC]`;
-        mainColor = "#ff7875";
-        subMessage = "";
-        renderAll();
-      }
-
-      function xacNhanCuocHienTai() {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        if (xu <= 0) {
-          mainMessage = ketSat > 0
-            ? "HẾT XU! BẤM [RÚT KÉT SẮT] ĐỂ LẤY TIỀN"
-            : "ĐÃ HẾT XU! BẤM [CHƠI LẠI] ĐỂ NHẬN LẠI 1000 XU";
-          mainColor = "#ff7875";
-          renderAll();
-          return;
-        }
-        if (cuaChon === 0) {
-          mainMessage = "HÃY CHỌN [TÀI] HOẶC [XỈU] TRƯỚC KHI XÁC NHẬN!";
-          mainColor = "#ff7875";
-          renderAll();
-          return;
-        }
-
-        const mucThucTe = Math.min(xu, tienCuoc);
-        daXacNhanCuoc = true;
-        cuaDaXacNhan = cuaChon;
-        tienDaXacNhan = mucThucTe;
-        mainMessage = `ĐÃ XÁC NHẬN: ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} - ${tienDaXacNhan} XU! CHỜ XÓC`;
-        mainColor = "#86efac";
-        subMessage = "";
-        renderAll();
-      }
-
-      function guiVaoKet() {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        if (xu <= 0) {
-          mainMessage = "KHÔNG CÒN XU ĐỂ GỬI VÀO KÉT SẮT!";
-          mainColor = "#ff7875";
-        } else {
-          const soGui = Math.min(xu, tienCuoc);
-          xu -= soGui;
-          ketSat += soGui;
-          daXacNhanCuoc = false;
-          if (xu > 0 && tienCuoc > xu) tienCuoc = xu;
-          luuDuLieuNguoiDung();
-          mainMessage = `ĐÃ GỬI +${soGui} XU VÀO KÉT SẮT (Tổng két: ${ketSat} xu)`;
-          mainColor = "#67e8f9";
-        }
-        renderAll();
-      }
-
-      function rutTuKet() {
-        if (dangCheBat || dangXoc) return;
-        playClickSound();
-        if (ketSat <= 0) {
-          mainMessage = "KÉT SẮT ĐANG TRỐNG, CHƯA CÓ XU ĐỂ RÚT!";
-          mainColor = "#ff7875";
-        } else {
-          const soRut = Math.min(ketSat, tienCuoc);
-          ketSat -= soRut;
-          xu += soRut;
-          daXacNhanCuoc = false;
-          luuDuLieuNguoiDung();
-          mainMessage = `ĐÃ RÚT +${soRut} XU TỪ KÉT SẮT (Còn trong két: ${ketSat} xu)`;
-          mainColor = "#86efac";
-        }
-        renderAll();
-      }
-
-      function kiemTraMoHetBat() {
-        if (!dangCheBat || daCongBo) return;
-        const kc = Math.hypot(batOffsetX, batOffsetY);
-        if (kc >= 115) {
-          dangCheBat = false;
-          dangKeoChuot = false;
-          daCongBo = true;
-          batOffsetX = 140;
-          batOffsetY = -20;
-
-          chuanBiKetQuaSauMoBat();
-          apDungKetQuaVaTinhXu();
-          themVaoLichSu(ketQuaSo);
-          capNhatNhanDienCau();
-          luuDuLieuNguoiDung();
-          daXacNhanCuoc = false;
-
-          mocThoiGianCuoi = performance.now();
-          giayConLaiTruoc = -1;
-          renderAll();
-        }
-      }
-
-      function moBatBangPhimW() {
-        if (!dangCheBat || daCongBo || dangXoc) return;
-        batOffsetY -= 35;
-        mainMessage = "ĐANG KÉO BÁT...";
-        mainColor = "#67e8f9";
-        kiemTraMoHetBat();
-        renderAll();
-      }
-
-      function chayHoatAnhXoc() {
-        if (dangXoc) return;
-        dangXoc = true;
-        dangCheBat = false;
-        daCongBo = false;
-        dangKeoChuot = false;
-        batOffsetX = 0;
-        batOffsetY = 0;
-        subMessage = "";
-
-        if (!daXacNhanCuoc && cuaChon !== 0 && xu > 0) {
-          daXacNhanCuoc = true;
-          cuaDaXacNhan = cuaChon;
-          tienDaXacNhan = Math.min(xu, tienCuoc);
-        }
-
-        mainMessage = "ĐANG XÓC XÚC XẮC...";
-        mainColor = "#67e8f9";
-        renderAll();
-
-        const totalSteps = 22;
-        let step = 0;
-        const timer = setInterval(() => {
-          step++;
-          const huong = step % 2 === 0 ? 1 : -1;
-          for (let i = 1; i <= 3; i++) {
-            const pha = (step + i) % 2 === 0 ? 1 : -1;
-            ox[i] = huong * (8 + i * 2);
-            oy[i] = pha * 8;
-            showDice[i] = Math.floor(Math.random() * 6) + 1;
-          }
-          playShakeTick(step);
-          drawCanvas();
-
-          if (step >= totalSteps) {
-            clearInterval(timer);
-            sinhXucXacTheoTiLe();
-            ox = [0, 0, 0, 0];
-            oy = [0, 0, 0, 0];
-            showDice = [0, d[1], d[2], d[3]];
-            soLanXoc++;
-            dangXoc = false;
-            dangCheBat = true;
-            batOffsetX = 0;
-            batOffsetY = 0;
-
-            if (daXacNhanCuoc && cuaDaXacNhan !== 0) {
-              mainMessage = `ĐÃ CƯỢC ${cuaDaXacNhan === 1 ? "TÀI" : "XỈU"} (${tienDaXacNhan} XU) - KÉO BÁT RA ĐỂ BIẾT KẾT QUẢ!`;
-            } else {
-              mainMessage = "ĐÃ CHE BÁT - KÉO BÁT RA ĐỂ BIẾT KẾT QUẢ!";
-            }
-            mainColor = "#ffd43b";
-            mocThoiGianCuoi = performance.now();
-            giayConLaiTruoc = -1;
-            renderAll();
-          }
-        }, 45);
-      }
-
-      function drawDie(x, y, size, mat) {
-        ctx.save();
-        ctx.fillStyle = "#ffffff";
-        ctx.strokeStyle = "#334155";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.roundRect(x, y, size, size, 7);
-        ctx.fill();
-        ctx.stroke();
-
-        const mid = size / 2;
-        const left = size / 4;
-        const right = (size * 3) / 4;
-        const r = Math.max(2.5, size / 10.5);
-
-        const drawPip = (px, py, isRed) => {
-          ctx.beginPath();
-          ctx.fillStyle = isRed ? "#dc2626" : "#0f172a";
-          ctx.arc(x + px, y + py, r + (isRed ? 1 : 0), 0, Math.PI * 2);
-          ctx.fill();
-        };
-
-        if (mat === 1 || mat === 3 || mat === 5) drawPip(mid, mid, true);
-        if (mat >= 2) {
-          drawPip(left, left, false);
-          drawPip(right, right, false);
-        }
-        if (mat >= 4) {
-          drawPip(right, left, false);
-          drawPip(left, right, false);
-        }
-        if (mat === 6) {
-          drawPip(left, mid, false);
-          drawPip(right, mid, false);
-        }
-        ctx.restore();
-      }
-
-      function drawBowl(offsetX, offsetY) {
-        const cx = DIA_X + offsetX;
-        const cy = DIA_Y + offsetY;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(cx, cy, R_DIA + 4, 0, Math.PI * 2);
-        ctx.fillStyle = "#1d4ed8";
-        ctx.fill();
-        ctx.lineWidth = 2.5;
-        ctx.strokeStyle = "#e2e8f0";
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(cx, cy - 3, R_DIA - 16, 0, Math.PI * 2);
-        ctx.fillStyle = "#38bdf8";
-        ctx.fill();
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = "#f8fafc";
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(cx, cy - 5, 13, 0, Math.PI * 2);
-        ctx.fillStyle = "#ffd43b";
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function drawCanvas() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Outer rim of plate
-        ctx.beginPath();
-        ctx.arc(DIA_X, DIA_Y, R_DIA + 12, 0, Math.PI * 2);
-        ctx.fillStyle = "#334155";
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#94a3b8";
-        ctx.stroke();
-
-        // Inner plate
-        ctx.beginPath();
-        ctx.arc(DIA_X, DIA_Y, R_DIA, 0, Math.PI * 2);
-        ctx.fillStyle = "#cbd5e1";
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#ffffff";
-        ctx.stroke();
-
-        for (let i = 1; i <= 3; i++) {
-          const dieCenterX = DIA_X + TAM_DX[i] + ox[i];
-          const dieCenterY = DIA_Y + TAM_DY[i] + oy[i];
-          drawDie(dieCenterX - DICE_SIZE / 2, dieCenterY - DICE_SIZE / 2, DICE_SIZE, showDice[i]);
-        }
-
-        if (dangCheBat) {
-          drawBowl(batOffsetX, batOffsetY);
-        }
-
-        ctx.font = "600 12px 'Segoe UI', Arial, sans-serif";
-        ctx.fillStyle = "#cbd5e1";
-        ctx.textAlign = "center";
-        if (dangCheBat) {
-          ctx.fillText("Kéo bát bằng chuột hoặc cảm ứng sang bên để mở", DIA_X, canvas.height - 10);
-        } else {
-          ctx.fillText("Đĩa kết quả Tài Xỉu 11 Tin", DIA_X, canvas.height - 10);
-        }
-      }
-
-      function renderBeads() {
-        beadsRow.innerHTML = "";
-        const nHist = hist.length - 1;
-        const hienThi = Math.min(18, nHist);
-        const startIdx = nHist - hienThi + 1;
-
-        for (let i = 0; i < hienThi; i++) {
-          const val = hist[startIdx + i];
-          const el = document.createElement("div");
-          el.className = `bead ${val === 1 ? "tai" : "xiu"}${i === hienThi - 1 ? " latest" : ""}`;
-          el.textContent = val === 1 ? "T" : "X";
-          beadsRow.appendChild(el);
-        }
-      }
-
-      function renderUI() {
-        xuVal.textContent = String(xu);
-        ketVal.textContent = String(ketSat);
-        cuocVal.textContent = String(daXacNhanCuoc && cuaDaXacNhan !== 0 ? tienDaXacNhan : tienCuoc);
-
-        statusMain.textContent = mainMessage;
-        statusMain.style.color = mainColor;
-        statusSub.textContent = subMessage;
-        statusSub.style.color = subColor;
-
-        cauText.textContent = cauMessage;
-        cauText.style.color = cauColor;
-        spinCounter.textContent = `Lần xóc: ${soLanXoc}`;
-
-        const sCon = layGiayConLai();
-        if (sCon >= 0) {
-          countdownBadge.style.display = "inline-block";
-          countdownBadge.textContent = `Auto: ${sCon}s`;
-        } else if (dangCheBat) {
-          countdownBadge.style.display = "inline-block";
-          countdownBadge.textContent = "Đang che bát";
-        } else {
-          countdownBadge.style.display = "none";
-        }
-
-        const hetSachTien = xu <= 0 && ketSat <= 0 && !dangXoc && !dangCheBat;
-        rejoinWrap.classList.toggle("visible", hetSachTien);
-
-        btnTai.classList.toggle("selected", cuaChon === 1);
-        btnXiu.classList.toggle("selected", cuaChon === 2);
-
-        mgButtons.forEach((b) => {
-          const v = Number(b.dataset.mg);
-          b.classList.toggle("selected", tienCuoc === v && tienCuoc !== xu);
-          b.disabled = dangCheBat || dangXoc;
-        });
-
-        btnTai.disabled = dangCheBat || dangXoc;
-        btnXiu.disabled = dangCheBat || dangXoc;
-        btnConfirm.disabled = dangCheBat || dangXoc;
-        btnAllIn.disabled = dangCheBat || dangXoc;
-        btnDeposit.disabled = dangCheBat || dangXoc;
-        btnWithdraw.disabled = dangCheBat || dangXoc;
-
-        btnConfirm.classList.toggle("confirmed", daXacNhanCuoc);
-        btnConfirm.textContent = daXacNhanCuoc ? "ĐÃ XÁC NHẬN" : "XÁC NHẬN CƯỢC";
-
-        renderBeads();
-      }
-
-      function renderAll() {
-        renderUI();
-        drawCanvas();
-      }
-
-      function getCanvasCoords(evt) {
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        return {
-          x: (evt.clientX - rect.left) * scaleX,
-          y: (evt.clientY - rect.top) * scaleY
-        };
-      }
-
-      function chamVaoBat(px, py) {
-        const cx = DIA_X + batOffsetX;
-        const cy = DIA_Y + batOffsetY;
-        return Math.hypot(px - cx, py - cy) <= R_DIA + 24;
-      }
-
-      canvas.addEventListener("pointerdown", (evt) => {
-        if (!dangCheBat || daCongBo || dangXoc) return;
-        const pt = getCanvasCoords(evt);
-        if (chamVaoBat(pt.x, pt.y)) {
-          dangKeoChuot = true;
-          pointerIdActive = evt.pointerId;
-          lastPX = pt.x;
-          lastPY = pt.y;
-          canvas.setPointerCapture(evt.pointerId);
-        }
-      });
-
-      canvas.addEventListener("pointermove", (evt) => {
-        if (!dangKeoChuot || evt.pointerId !== pointerIdActive || !dangCheBat || daCongBo) return;
-        const pt = getCanvasCoords(evt);
-        batOffsetX += pt.x - lastPX;
-        batOffsetY += pt.y - lastPY;
-        lastPX = pt.x;
-        lastPY = pt.y;
-        mainMessage = "ĐANG KÉO BÁT...";
-        mainColor = "#67e8f9";
-        kiemTraMoHetBat();
-        renderAll();
-      });
-
-      function ketThucKeoBat(evt) {
-        if (!dangKeoChuot || evt.pointerId !== pointerIdActive) return;
-        dangKeoChuot = false;
-        pointerIdActive = null;
-        kiemTraMoHetBat();
-        renderAll();
-      }
-
-      canvas.addEventListener("pointerup", ketThucKeoBat);
-      canvas.addEventListener("pointercancel", ketThucKeoBat);
-
-      btnStart.addEventListener("click", () => {
-        playClickSound();
-        daBatDau = true;
-        startScreen.classList.remove("active");
-        gameScreen.classList.add("active");
+        mainColor = "#ffe885";
         mocThoiGianCuoi = performance.now();
         giayConLaiTruoc = -1;
         renderAll();
-      });
-
-      btnSound.addEventListener("click", () => {
-        soundEnabled = !soundEnabled;
-        btnSound.textContent = soundEnabled ? "Âm thanh: BẬT" : "Âm thanh: TẮT";
-        btnSound.classList.toggle("active-toggle", soundEnabled);
-        if (soundEnabled) playClickSound();
-      });
-
-      btnResetSave.addEventListener("click", resetDuLieuVeMacDinh);
-      btnRejoin.addEventListener("click", choiLaiKhiHetTien);
-
-      btnTai.addEventListener("click", () => chonCua(1));
-      btnXiu.addEventListener("click", () => chonCua(2));
-      mgButtons.forEach((b) => {
-        b.addEventListener("click", () => chonMenhGia(Number(b.dataset.mg)));
-      });
-      btnConfirm.addEventListener("click", xacNhanCuocHienTai);
-      btnAllIn.addEventListener("click", bamAllIn);
-      btnDeposit.addEventListener("click", guiVaoKet);
-      btnWithdraw.addEventListener("click", rutTuKet);
-
-      window.addEventListener("keydown", (evt) => {
-        if (!daBatDau) {
-          if (evt.key === "Enter" || evt.key === " ") {
-            evt.preventDefault();
-            btnStart.click();
-          }
-          return;
-        }
-
-        const k = evt.key.toLowerCase();
-        if (!dangCheBat && !dangXoc) {
-          if (k === "t") chonCua(1);
-          else if (k === "x") chonCua(2);
-          else if (k === "a") bamAllIn();
-          else if (k === "g") guiVaoKet();
-          else if (k === "r") rutTuKet();
-          else if (k === "f" || evt.key === "Enter") {
-            evt.preventDefault();
-            xacNhanCuocHienTai();
-          }
-        } else if (dangCheBat && !daCongBo && !dangXoc && k === "w") {
-          moBatBangPhimW();
-        }
-      });
-
-      window.addEventListener("beforeunload", () => {
-        luuDuLieuNguoiDung();
-      });
-
-      setInterval(() => {
-        if (!daBatDau || dangCheBat || dangXoc) return;
-        const sNow = layGiayConLai();
-        if (performance.now() - mocThoiGianCuoi >= CHU_KY_AUTO_MS) {
-          chayHoatAnhXoc();
-        } else if (sNow !== giayConLaiTruoc) {
-          giayConLaiTruoc = sNow;
-          renderUI();
-        }
-      }, 150);
-
-      if (!taiDuLieuNguoiDung()) {
-        khoiTaoLichSuMau();
       }
-      capNhatNhanDienCau();
-      renderAll();
-    })();
-  </script>
+    }, 45);
+  }
+
+  /* ==================== VẼ ĐĨA, XÚC XẮC & BÁT SỨ 3D ==================== */
+  function drawDie(x, y, size, mat) {
+    ctx.save();
+    // Bóng xúc xắc
+    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetY = 3;
+
+    const grad = ctx.createLinearGradient(x, y, x + size, y + size);
+    grad.addColorStop(0, "#ffffff");
+    grad.addColorStop(1, "#e2e8f0");
+    ctx.fillStyle = grad;
+    ctx.strokeStyle = "#94a3b8";
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(x, y, size, size, 7);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.shadowColor = "transparent";
+    const mid = size / 2;
+    const left = size / 4;
+    const right = (size * 3) / 4;
+    const r = Math.max(2.4, size / 10.5);
+
+    const drawPip = (px, py, isRed) => {
+      ctx.beginPath();
+      ctx.fillStyle = isRed ? "#dc2626" : "#0f172a";
+      ctx.arc(x + px, y + py, r + (isRed ? 1 : 0), 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    if (mat === 1 || mat === 3 || mat === 5) drawPip(mid, mid, true);
+    if (mat >= 2) {
+      drawPip(left, left, false);
+      drawPip(right, right, false);
+    }
+    if (mat >= 4) {
+      drawPip(right, left, false);
+      drawPip(left, right, false);
+    }
+    if (mat === 6) {
+      drawPip(left, mid, false);
+      drawPip(right, mid, false);
+    }
+    ctx.restore();
+  }
+
+  function drawBowl(offsetX, offsetY) {
+    const cx = DIA_X + offsetX;
+    const cy = DIA_Y + offsetY;
+
+    ctx.save();
+    // Đổ bóng bát xuống đĩa
+    ctx.beginPath();
+    ctx.arc(cx + 4, cy + 8, R_DIA + 5, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.52)";
+    ctx.fill();
+
+    // Thân bát sứ ngọc bích & viền vàng
+    const bowlGrad = ctx.createRadialGradient(cx - 22, cy - 26, 8, cx, cy, R_DIA + 5);
+    bowlGrad.addColorStop(0, "#34d399");
+    bowlGrad.addColorStop(0.55, "#047857");
+    bowlGrad.addColorStop(1, "#022c22");
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, R_DIA + 5, 0, Math.PI * 2);
+    ctx.fillStyle = bowlGrad;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#f5b82e";
+    ctx.stroke();
+
+    // Hoa văn vòng tròn đồng tâm trên bát
+    ctx.beginPath();
+    ctx.arc(cx, cy, R_DIA - 14, 0, Math.PI * 2);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgba(255, 232, 133, 0.55)";
+    ctx.stroke();
+
+    // Núm cầm bát mạ vàng 3D
+    const knobGrad = ctx.createRadialGradient(cx - 4, cy - 6, 2, cx, cy - 2, 15);
+    knobGrad.addColorStop(0, "#fff7c2");
+    knobGrad.addColorStop(0.6, "#f5b82e");
+    knobGrad.addColorStop(1, "#92400e");
+
+    ctx.beginPath();
+    ctx.arc(cx, cy - 2, 14, 0, Math.PI * 2);
+    ctx.fillStyle = knobGrad;
+    ctx.fill();
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "#fef08a";
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Vành đĩa ngoài mạ vàng đồng
+    const rimGrad = ctx.createLinearGradient(DIA_X - R_DIA, DIA_Y - R_DIA, DIA_X + R_DIA, DIA_Y + R_DIA);
+    rimGrad.addColorStop(0, "#ffe885");
+    rimGrad.addColorStop(0.5, "#b87a14");
+    rimGrad.addColorStop(1, "#5c3a06");
+
+    ctx.beginPath();
+    ctx.arc(DIA_X, DIA_Y, R_DIA + 13, 0, Math.PI * 2);
+    ctx.fillStyle = rimGrad;
+    ctx.fill();
+
+    // Lòng đĩa sứ trắng ngà
+    const plateGrad = ctx.createRadialGradient(DIA_X - 18, DIA_Y - 18, 10, DIA_X, DIA_Y, R_DIA);
+    plateGrad.addColorStop(0, "#ffffff");
+    plateGrad.addColorStop(0.75, "#e2e8f0");
+    plateGrad.addColorStop(1, "#94a3b8");
+
+    ctx.beginPath();
+    ctx.arc(DIA_X, DIA_Y, R_DIA, 0, Math.PI * 2);
+    ctx.fillStyle = plateGrad;
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.stroke();
+
+    for (let i = 1; i <= 3; i++) {
+      const dieCenterX = DIA_X + TAM_DX[i] + ox[i];
+      const dieCenterY = DIA_Y + TAM_DY[i] + oy[i];
+      drawDie(dieCenterX - DICE_SIZE / 2, dieCenterY - DICE_SIZE / 2, DICE_SIZE, showDice[i]);
+    }
+
+    if (dangCheBat) {
+      drawBowl(batOffsetX, batOffsetY);
+    }
+
+    ctx.font = "700 12px 'Be Vietnam Pro', sans-serif";
+    ctx.fillStyle = dangCheBat ? "#ffe885" : "#94a3b8";
+    ctx.textAlign = "center";
+    if (dangCheBat) {
+      ctx.fillText("Kéo bát sang bên hoặc nhấn [W] để mở", DIA_X, canvas.height - 10);
+    } else {
+      const tong = showDice[1] + showDice[2] + showDice[3];
+      ctx.fillText(`Tổng điểm: ${tong} (${tong >= 11 ? "TÀI" : "XỈU"})`, DIA_X, canvas.height - 10);
+    }
+  }
+
+  function renderBeads() {
+    if (!beadsRow) return;
+    beadsRow.innerHTML = "";
+    const nHist = hist.length - 1;
+    let countTai = 0;
+    let countXiu = 0;
+    for (let i = 1; i <= nHist; i++) {
+      if (hist[i] === 1) countTai++;
+      else if (hist[i] === 2) countXiu++;
+    }
+    if (taiCountStat) taiCountStat.textContent = `TÀI: ${countTai}`;
+    if (xiuCountStat) xiuCountStat.textContent = `XỈU: ${countXiu}`;
+
+    const hienThi = Math.min(22, nHist);
+    const startIdx = nHist - hienThi + 1;
+
+    for (let i = 0; i < hienThi; i++) {
+      const val = hist[startIdx + i];
+      const el = document.createElement("div");
+      el.className = `bead ${val === 1 ? "tai" : "xiu"}${i === hienThi - 1 ? " latest" : ""}`;
+      el.textContent = val === 1 ? "T" : "X";
+      beadsRow.appendChild(el);
+    }
+  }
+
+  function renderUI() {
+    if (playerBadge) {
+      playerBadge.textContent = currentUser ? `TK: ${currentUser.displayName}` : "TK: ---";
+    }
+    if (xuVal) xuVal.textContent = xu.toLocaleString("vi-VN");
+    if (ketVal) ketVal.textContent = ketSat.toLocaleString("vi-VN");
+    const activeStake = daXacNhanCuoc && cuaDaXacNhan !== 0 ? tienDaXacNhan : tienCuoc;
+    if (cuocVal) cuocVal.textContent = activeStake.toLocaleString("vi-VN");
+
+    if (statusMain) {
+      statusMain.textContent = mainMessage;
+      statusMain.style.color = mainColor;
+    }
+    if (statusSub) {
+      statusSub.textContent = subMessage;
+      statusSub.style.color = subColor;
+    }
+
+    if (cauText) {
+      cauText.textContent = cauMessage;
+      cauText.style.color = cauColor;
+    }
+    if (spinCounter) spinCounter.textContent = `Phiên: ${soLanXoc}`;
+
+    const sCon = layGiayConLai();
+    if (countdownBadge) {
+      if (sCon >= 0) {
+        countdownBadge.style.display = "block";
+        countdownBadge.classList.remove("bowl-mode");
+        countdownBadge.textContent = `Xóc sau: ${sCon}s`;
+      } else if (dangCheBat) {
+        countdownBadge.style.display = "block";
+        countdownBadge.classList.add("bowl-mode");
+        countdownBadge.textContent = "MỞ BÁT";
+      } else {
+        countdownBadge.style.display = "none";
+      }
+    }
+
+    const hetSachTien = xu <= 0 && ketSat <= 0 && !dangXoc && !dangCheBat;
+    if (rejoinWrap) rejoinWrap.classList.toggle("visible", hetSachTien);
+
+    if (btnTai) btnTai.classList.toggle("selected", cuaChon === 1);
+    if (btnXiu) btnXiu.classList.toggle("selected", cuaChon === 2);
+
+    if (taiStakeLabel && xiuStakeLabel) {
+      if (cuaChon === 1) {
+        taiStakeLabel.textContent = `${daXacNhanCuoc ? "ĐÃ CHỐT" : "ĐANG CHỌN"}: ${activeStake.toLocaleString("vi-VN")} XU`;
+        xiuStakeLabel.textContent = "Chạm để chọn";
+      } else if (cuaChon === 2) {
+        xiuStakeLabel.textContent = `${daXacNhanCuoc ? "ĐÃ CHỐT" : "ĐANG CHỌN"}: ${activeStake.toLocaleString("vi-VN")} XU`;
+        taiStakeLabel.textContent = "Chạm để chọn";
+      } else {
+        taiStakeLabel.textContent = "Chạm để chọn";
+        xiuStakeLabel.textContent = "Chạm để chọn";
+      }
+    }
+
+    const lockControls = dangCheBat || dangXoc;
+    mgButtons.forEach((b) => {
+      const v = Number(b.dataset.mg);
+      b.classList.toggle("selected", tienCuoc === v && tienCuoc !== xu);
+      b.disabled = lockControls;
+    });
+    if (btnAllIn) {
+      btnAllIn.classList.toggle("selected", xu > 0 && tienCuoc === xu);
+      btnAllIn.disabled = lockControls;
+    }
+
+    if (btnTai) btnTai.disabled = lockControls;
+    if (btnXiu) btnXiu.disabled = lockControls;
+    if (btnConfirm) {
+      btnConfirm.disabled = lockControls;
+      btnConfirm.classList.toggle("confirmed", daXacNhanCuoc);
+      btnConfirm.textContent = daXacNhanCuoc ? "✓ ĐÃ CHỐT CƯỢC" : "XÁC NHẬN CƯỢC";
+    }
+    if (btnDeposit) btnDeposit.disabled = lockControls;
+    if (btnWithdraw) btnWithdraw.disabled = lockControls;
+    if (btnSwitchAccount) btnSwitchAccount.disabled = dangXoc;
+
+    renderBeads();
+  }
+
+  function renderAll() {
+    renderUI();
+    drawCanvas();
+  }
+
+  function getCanvasCoords(evt) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (evt.clientX - rect.left) * scaleX,
+      y: (evt.clientY - rect.top) * scaleY
+    };
+  }
+
+  function chamVaoBat(px, py) {
+    const cx = DIA_X + batOffsetX;
+    const cy = DIA_Y + batOffsetY;
+    return Math.hypot(px - cx, py - cy) <= R_DIA + 24;
+  }
+
+  canvas.addEventListener("pointerdown", (evt) => {
+    if (!dangCheBat || daCongBo || dangXoc) return;
+    const pt = getCanvasCoords(evt);
+    if (chamVaoBat(pt.x, pt.y)) {
+      dangKeoChuot = true;
+      pointerIdActive = evt.pointerId;
+      lastPX = pt.x;
+      lastPY = pt.y;
+      canvas.setPointerCapture(evt.pointerId);
+    }
+  });
+
+  canvas.addEventListener("pointermove", (evt) => {
+    if (!dangKeoChuot || evt.pointerId !== pointerIdActive || !dangCheBat || daCongBo) return;
+    const pt = getCanvasCoords(evt);
+    batOffsetX += pt.x - lastPX;
+    batOffsetY += pt.y - lastPY;
+    lastPX = pt.x;
+    lastPY = pt.y;
+    mainMessage = "ĐANG NẶN BÁT...";
+    mainColor = "#5ce1ff";
+    kiemTraMoHetBat();
+    renderAll();
+  });
+
+  function ketThucKeoBat(evt) {
+    if (!dangKeoChuot || evt.pointerId !== pointerIdActive) return;
+    dangKeoChuot = false;
+    pointerIdActive = null;
+    kiemTraMoHetBat();
+    renderAll();
+  }
+
+  canvas.addEventListener("pointerup", ketThucKeoBat);
+  canvas.addEventListener("pointercancel", ketThucKeoBat);
+
+  btnStart.addEventListener("click", dangNhapHoacTaoTaiKhoan);
+  btnSwitchAccount.addEventListener("click", doiTaiKhoan);
+  tabLogin.addEventListener("click", () => {
+    playClickSound();
+    setAuthMode("login");
+  });
+  tabRegister.addEventListener("click", () => {
+    playClickSound();
+    setAuthMode("register");
+  });
+
+  [inputPin, inputPinConfirm].forEach((pinInput) => {
+    pinInput.addEventListener("input", () => {
+      pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 6);
+    });
+  });
+
+  [inputUsername, inputPin, inputPinConfirm].forEach((inp) => {
+    inp.addEventListener("keydown", (evt) => {
+      if (evt.key === "Enter") {
+        evt.preventDefault();
+        dangNhapHoacTaoTaiKhoan();
+      }
+    });
+  });
+
+  btnSound.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    btnSound.textContent = soundEnabled ? "Âm: BẬT" : "Âm: TẮT";
+    btnSound.classList.toggle("sound-on", soundEnabled);
+    if (soundEnabled) playClickSound();
+  });
+
+  btnResetSave.addEventListener("click", resetDuLieuVeMacDinh);
+  btnRejoin.addEventListener("click", choiLaiKhiHetTien);
+
+  btnTai.addEventListener("click", () => chonCua(1));
+  btnXiu.addEventListener("click", () => chonCua(2));
+  mgButtons.forEach((b) => {
+    b.addEventListener("click", () => chonMenhGia(Number(b.dataset.mg)));
+  });
+  btnConfirm.addEventListener("click", xacNhanCuocHienTai);
+  btnAllIn.addEventListener("click", bamAllIn);
+  btnDeposit.addEventListener("click", guiVaoKet);
+  btnWithdraw.addEventListener("click", rutTuKet);
+
+  window.addEventListener("keydown", (evt) => {
+    if (!daBatDau) return;
+
+    const k = evt.key.toLowerCase();
+    if (!dangCheBat && !dangXoc) {
+      if (k === "t") chonCua(1);
+      else if (k === "x") chonCua(2);
+      else if (k === "a") bamAllIn();
+      else if (k === "g") guiVaoKet();
+      else if (k === "r") rutTuKet();
+      else if (k === "f" || evt.key === "Enter") {
+        evt.preventDefault();
+        xacNhanCuocHienTai();
+      }
+    } else if (dangCheBat && !daCongBo && !dangXoc && k === "w") {
+      moBatBangPhimW();
+    }
+  });
+
+  window.addEventListener("beforeunload", () => {
+    luuDuLieuNguoiDung();
+  });
+
+  setInterval(() => {
+    if (!daBatDau || dangCheBat || dangXoc) return;
+    const sNow = layGiayConLai();
+    if (performance.now() - mocThoiGianCuoi >= CHU_KY_AUTO_MS) {
+      chayHoatAnhXoc();
+    } else if (sNow !== giayConLaiTruoc) {
+      giayConLaiTruoc = sNow;
+      renderUI();
+    }
+  }, 150);
+
+  renderQuickAccounts();
+  try {
+    const lastUser = localStorage.getItem(LAST_USER_PREFIX + getDeviceId());
+    if (lastUser) {
+      const found = getAccountsList().find((a) => a.username === lastUser);
+      if (found) inputUsername.value = found.displayName;
+    }
+  } catch (_) {}
+  setAuthMode("login");
+  khoiTaoLichSuMau();
+  capNhatNhanDienCau();
+  renderAll();
+  initCloudAuth();
+})();
+</script>
 </body>
-
 </html>
